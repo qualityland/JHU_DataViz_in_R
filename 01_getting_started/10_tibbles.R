@@ -124,3 +124,4 @@ lics
 
 # 6. What option controls how many additional column names
 #    are printed at the footer of a tibble?
+?print.tbl
