@@ -2,10 +2,10 @@
 
 # install the tidyverse if you don't have it installed.
 # You only have to do this once.
-#install.packages("tidyverse")
+# install.packages("tidyverse")
 
-# load the tidyverse functions #### Do this everytime you want to use tidyverse
-# commands
+# load the tidyverse functions
+# do this every time you want to use tidyverse commands
 library(tidyverse)
 
 # Use read_csv instead of read.csv
@@ -17,7 +17,7 @@ library(tidyverse)
 
 cces <- read_csv("01_getting_started/data/cces_sample.csv")
 
-#### read_csv produces a tibble rather than a dataframe.
+# read_csv produces a tibble rather than a dataframe.
 
 class(cces)
 
@@ -164,7 +164,9 @@ summarise(grouped_gender,
 
 # combine all of this with piping if you want to look like a pro and have fewer
 # lines of code
-#cces %>% group_by(gender) %>% summarise(mean=mean(pid7))
+cces %>% 
+  group_by(gender) %>% 
+  summarise(mean=mean(pid7))
 
 
 
