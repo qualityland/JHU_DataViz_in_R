@@ -90,3 +90,20 @@ read_csv("a;b\n1;3")
 
 # Parsing a Vector
 
+# explicit grouping / decimal mark
+parse_number("It costs $1,234.56 in the USA.")
+parse_number("It costs CHF1'234.56 in Switzerland",
+             locale=locale(grouping_mark = "'"))
+parse_number("It costs €1.234,56 in Germany",
+             locale=locale(grouping_mark = ".",
+                           decimal_mark = ","))
+
+parse_datetime("2010-10-01T201055")
+parse_date("11 janvier 2015", "%d %B %Y", locale = locale("fr"))
+
+# Exercises
+# 1. What are the most important arguments to locale()?
+parse_number("It costs €1.234,56 in Germany",
+             locale=locale(grouping_mark = ".",
+                           decimal_mark = ","))
+
