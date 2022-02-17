@@ -167,10 +167,3 @@ summarise(grouped_gender,
 cces %>% 
   group_by(gender) %>% 
   summarise(mean=mean(pid7))
-
-
-
-
-
-
-
