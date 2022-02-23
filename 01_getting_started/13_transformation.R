@@ -148,3 +148,31 @@ flights %>%
 #    How can you change that default?
 flights %>%
   select(contains("TIME", ignore.case=FALSE))
+
+
+## mutate()
+
+# fewer columns, to make our changes visible
+flights_sml <- select(flights,
+                      year:day,
+                      ends_with("delay"),
+                      distance,
+                      air_time)
+
+# calculate gain and speed
+mutate(flights_sml,
+       gain = dep_delay - arr_delay,
+       speed = distance / air_time * 60)
+
+# even columns just created can be refered
+mutate(flights_sml,
+       gain = dep_delay - arr_delay,
+       hours = air_time / 60,
+       gain_per_hour = gain / hours)
+
+# keep only the new columns
+transmute(flights,
+          gain = dep_delay - arr_delay,
+          hours = air_time / 60,
+          gain_per_hour = gain / hours)
+
