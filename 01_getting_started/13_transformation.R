@@ -61,12 +61,90 @@ flights %>% filter(is.na(dep_time))
 
 ## arrange()
 
-# top department delay is 1301 min - more than 20 hours!
+# use desc(<columns>) to change order
 flights %>%
   arrange(desc(dep_delay))
+# top department delay is 1301 min - more than 20 hours!
 
-# NA's are always sorted at the end
+# Missing values are ALWAYS sorted at the end
+tibble(x = c(5, 2, NA)) %>% 
+  arrange(x)
+
+tibble(x = c(5, 2, NA)) %>% 
+  arrange(desc(x))
+
+# Exercises
+# 1. How could you use arrange() to sort all missing values to the start?
+#    Hint: use is.na()
 flights %>% 
-  arrange(desc(dep_delay)) %>%
-  tail()
+  arrange(desc(is.na(dep_time)), dep_time)
 
+# 2. Sort flights to find the most delayed flights.
+flights %>% 
+  arrange(desc(dep_delay))
+#    Find the flights that left earliest.
+flights %>% 
+  arrange(dep_delay)
+
+# 3. Sort flights to find the fastest (highest speed) flights.
+flights %>% 
+  mutate(v=distance / (air_time / 60)) %>% 
+  select(year, month, day, dep_time, arr_time, distance, air_time, v) %>% 
+  arrange(desc(v))
+
+# 4. Which flights travelled the farthest?
+flights %>% 
+  arrange(desc(distance))
+#    Which travelled the shortest?
+flights %>% 
+  arrange(distance)
+
+## select()
+
+# columns from:to
+flights %>% 
+  select(year:day)
+
+# except columns from:to
+flights %>% 
+  select(-(year:day))
+
+# columns ending with...
+flights %>% 
+  select(ends_with("delay"))
+
+# Exercises
+# 1. Brainstorm as many ways as possible to select
+#    dep_time, dep_delay, arr_time, and arr_delay from flights.
+flights %>%
+  select(starts_with("dep") | starts_with("arr"))
+flights %>%
+  select(matches("^(dep|arr)_(delay|time)$"))
+flights %>%
+  select(contains("^(dep|arr)_(delay|time)$"))
+
+# 2. What happens if you include the name of a variable multiple times in
+#    a select() call?
+flights %>% 
+  select(year, month, year)  # ignores duplication
+
+# 3. What does the any_of() function do?
+#    Why might it be helpful in conjunction with this vector?
+vars <- c("year", "month", "day", "dep_delay", "arr_delay", "trallala")
+flights %>% 
+  select(any_of(vars))
+# Error: Column "trallala" doesn't exist.
+flights %>% 
+  select(all_of(vars))
+
+# 4. Does the result of running the following code surprise you?
+flights %>% 
+  select(contains("TIME"))
+
+#    How do the select helpers deal with case by default?
+flights %>% 
+  select(contains("TIME", ignore.case = TRUE)) #    case-insensitive
+
+#    How can you change that default?
+flights %>%
+  select(contains("TIME", ignore.case=FALSE))
