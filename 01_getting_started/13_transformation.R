@@ -152,27 +152,56 @@ flights %>%
 
 ## mutate()
 
-# fewer columns, to make our changes visible
-flights_sml <- select(flights,
-                      year:day,
-                      ends_with("delay"),
-                      distance,
-                      air_time)
+# add new columns
+flights %>%                  # reduce number of columns
+  select(year:day,
+         ends_with("delay"),
+         distance,
+         air_time) %>%
+  # calculate gain and speed
+  mutate(gain = dep_delay - arr_delay,
+         speed = distance / air_time * 60)
 
-# calculate gain and speed
-mutate(flights_sml,
-       gain = dep_delay - arr_delay,
-       speed = distance / air_time * 60)
+# columns just created, can be referred to immediately
+flights %>%                  # reduce number of columns
+  select(year:day,
+         ends_with("delay"),
+         distance,
+         air_time) %>%
+  # new columns immediately used
+  mutate(
+    gain = dep_delay - arr_delay,
+    hours = air_time / 60,
+    gain_per_hour = gain / hours
+  )
 
-# even columns just created can be refered
-mutate(flights_sml,
-       gain = dep_delay - arr_delay,
-       hours = air_time / 60,
-       gain_per_hour = gain / hours)
+# transmute() - only keeps the newly created columns
+flights %>%                  # reduce number of columns
+  # keep only the new columns
+  transmute(
+    gain = dep_delay - arr_delay,
+    hours = air_time / 60,
+    gain_per_hour = gain / hours
+  )
 
-# keep only the new columns
-transmute(flights,
-          gain = dep_delay - arr_delay,
-          hours = air_time / 60,
-          gain_per_hour = gain / hours)
+# modular arithmetic
+flights %>%
+  transmute(dep_time,
+            hour = dep_time %/% 100,   # integer division
+            minute = dep_time %% 100)  # modulo operator
+
+# offsets: lead() and lag()
+(x <- 1:10)
+#  allow you to refer to lagging values
+lag(x)
+#  allow you to refer to leading values
+lead(x)
+
+# cumulative aggregates
+x
+# cumulative sum
+cumsum(x)
+# cumulative mean
+cummean(x)
+
 
