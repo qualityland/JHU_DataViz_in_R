@@ -204,4 +204,103 @@ cumsum(x)
 # cumulative mean
 cummean(x)
 
+# Exercises
+# 1. Currently dep_time and sched_dep_time are convenient to look at, but hard
+#    to compute with because they’re not really continuous numbers.
+#    Convert them to a more convenient representation of number of minutes
+#    since midnight.
+flights %>%
+  transmute(
+    dep_time,
+    dep_min = dep_time %/% 100 * 60 + dep_time %% 100,
+    sched_dep_time,
+    sched_dep_min = sched_dep_time %/% 100 * 60 + sched_dep_time %% 100
+  )
 
+# 2. Compare air_time with arr_time - dep_time. What do you expect to see?
+# air_time: in min; dep_time, arr_time: hmm (hour, min, min)
+# Expectation: air_time = arr_time (min) - dep_time (min)
+flights %>%
+  transmute(air_time,
+            arr_time,
+            dep_time,
+            d_time = arr_time - dep_time)
+#    What do you see?
+#    It is always more, so taxing and waiting is probably not included.
+#    What do you need to do to fix it?
+#    Take-off and landing times are needed.
+
+# 3. Compare dep_time, sched_dep_time, and dep_delay. How would you expect
+#    those three numbers to be related?
+#    Expectation: dep_time = sched_dep_time + dep_delay
+flights %>% 
+  transmute(dep_time,
+            d_time = sched_dep_time + dep_delay,
+            sched_dep_time,
+            dep_delay)
+
+
+## summarize()
+
+flights %>% 
+summarise(delay = mean(dep_delay, na.rm = TRUE))
+
+# combination with group_by() makes more sense
+flights %>%
+  group_by(year, month, day) %>%                    # group by date
+  summarise(delay = mean(dep_delay, na.rm = TRUE))  # mean delay
+
+# group by, summarize and plot (delay vs. distance to destination)
+flights %>%
+  group_by(dest) %>%                             # group by destination
+  summarise(
+    count = n(),                                 # number of flights to dest
+    dist = mean(distance, na.rm = TRUE),         # distance to destination
+    delay = mean(arr_delay, na.rm = TRUE)        # avg delay at destination
+  ) %>%
+  filter(
+    count > 20,                                  # remove rare destinations
+    dest != "HNL") %>%                           # remove Honolulu (too far)
+  ggplot(mapping = aes(x = dist, y = delay)) +   # delay vs. distance
+  geom_point(aes(size = count), alpha = 1 / 3) +
+  geom_smooth(se = FALSE)                        # smoother
+
+
+
+
+
+flights %>%
+  filter(
+    !is.na(dep_delay),                           # remove cancelled flights
+    !is.na(arr_delay)) %>%
+  group_by(tailnum) %>%                          # group by plane (tail number)
+  summarise(delay = mean(arr_delay)) %>%         # avg delay of each plane
+  ggplot(mapping = aes(x = delay)) +
+  geom_freqpoly(binwidth = 10)
+# some planes have > 300 min delay
+
+
+flights %>%
+  filter(
+    !is.na(dep_delay),
+    !is.na(arr_delay)) %>%
+  group_by(tailnum) %>%
+  summarise(delay = mean(arr_delay, na.rm = TRUE),
+            n = n()) %>%                        # flights of this plane
+  ggplot(mapping = aes(x = n, y = delay)) +
+  geom_point(alpha = 1 / 10)
+# rare flights have a high variation of delays,
+# more regular ones have small variation of delays
+
+
+
+flights %>%
+  filter(
+    !is.na(dep_delay),
+    !is.na(arr_delay)) %>%
+  group_by(tailnum) %>%
+  summarise(delay = mean(arr_delay, na.rm = TRUE),
+            n = n()) %>%                        # flights of this plane
+  filter(n > 25) %>% 
+  ggplot(mapping = aes(x = n, y = delay)) +
+  geom_point(alpha = 1 / 10)
