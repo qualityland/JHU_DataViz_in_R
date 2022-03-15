@@ -1,4 +1,4 @@
-# creating dataframes
+# creating data frames
 variable1 <- c(1, 2, 3, 4, 5)
 variable2 <- c(6, 7, 8, 9, 10)
 
@@ -19,27 +19,25 @@ my_weights <- my_dat$weight
 my_weights
 
 
-# selecting data from dataframes
+# selecting data from data frames
 
 # remember you specify row, then column in the brackets
 
 # first row, all columns
 my_dat[1, ]
 
-# first column, all rows
+# all rows, first column
 my_dat[, 1]
 
-# first column, first row,
+# first row, first column
 my_dat[1, 1]
 
-# first column, first three rows
+# first three rows, first column
 my_dat[1:3, 1]
 
 
-
-
-
 # creating new columns
+
 # single value repeated
 my_dat$variable3 <- 100
 my_dat
@@ -53,12 +51,7 @@ my_dat
 my_dat$variable5 <- c("banana", "mango")
 
 
-
-
-
-
-
-# get the dimensions of a dataframe (rows and columns)
+# get the dimensions of a data frame (rows and columns)
 dim(my_dat)
 
 # get more information about the structure of a data frame
@@ -69,24 +62,22 @@ ncol(my_dat)
 # get the column headers of the data frame
 names(my_dat)
 
-# if you have a big dataframe, use head() to see the first few rows or tail to
+# if you have a big data frame, use head() to see the first few rows or tail to
 # see the last few
 head(my_dat)
 tail(my_dat)
 
-# Spreadsheet View
+# spreadsheet view
 View(my_dat)
 
 
-
-
-# Missing data causes lots of problems. Some functions "break" and throw errors
+# missing data causes lots of problems. some functions "break" and throw errors
 # if you include missing data
 with_missing <- c(1, 2, 3, NA)
 sum(with_missing)
 
-# You should look at the documentation for a function to understand how it
-# handles missing data. Sometimes you can use an argument with a function to
+# you should look at the documentation for a function to understand how it
+# handles missing data. sometimes you can use an argument with a function to
 # tell it how to deal with the missing data, often telling the function to
 # ignore the missing cells.
 
@@ -95,12 +86,12 @@ sum(with_missing)
 sum(with_missing, na.rm = TRUE)
 
 
-# combining two dataframes with cbind
+# combining two data frames with cbind
 
 my_dat2 <- data.frame("variable4" = 400:499, "variable5" = 500:599)
 
 all_dat <- cbind(my_dat, my_dat2)
-
+dim(all_dat)
 head(all_dat)
 
 # adding a row
@@ -111,20 +102,18 @@ all_dat_plus_new_row <- rbind(all_dat, new_row)
 
 tail(all_dat_plus_new_row)
 
-# combining two dataframes with rbind
+# combining two data frames with rbind
 
-# you have to make sure the two dataframes have the same column names and order
+# you have to make sure the two data frames have the same column names and order
 
 # this won't work
-my_dat <- data.frame("variable1" = 1:100, "variable2" = 200:299)
-
+my_dat1 <- data.frame("variable1" = 1:100,   "variable2" = 200:299)
 my_dat2 <- data.frame("variable4" = 400:499, "variable5" = 500:599)
 
-rbind(my_dat, my_dat2)
+rbind(my_dat1, my_dat2)       # different column names!!!
 
 # this will work
-my_dat <- data.frame("variable1" = 1:100, "variable2" = 200:299)
-
+my_dat1 <- data.frame("variable1" = 1:100,   "variable2" = 200:299)
 my_dat2 <- data.frame("variable1" = 400:499, "variable2" = 500:599)
 
-rbind(my_dat, my_dat2)
+rbind(my_dat1, my_dat2)       # same column names :)
