@@ -68,7 +68,7 @@ c(c))
 "apple" < "apples"
 "apple" > "apples"
 
-#### save the output of a command to an object
+# save the output of a command to an object
 a <- 2 + 2
 my_a <- 2 + 2
 my.a <- 2 + 2
