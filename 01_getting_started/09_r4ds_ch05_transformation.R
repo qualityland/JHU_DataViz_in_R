@@ -82,13 +82,14 @@ select(flights, year:day)
 select(flights, -(year:day))
 
 # helper functions for select:
-# starts_with("abc"): matches names that begin with “abc”.
+
+# starts_with("arr")
 select(flights, starts_with("arr"))
 
-# ends_with("xyz"): matches names that end with “xyz”.
+# ends_with("time")
 select(flights, ends_with("time"))
 
-# contains("ijk"): matches names that contain “ijk”.
+# contains("dep")
 select(flights, contains("dep"))
 
 # matches("(.)\\1"): selects variables that match a regular expression.
@@ -103,9 +104,9 @@ df <- tibble(x1=c(5, 2),
              y2=c(1, 2))
 select(df, num_range("x", 1:3))
 
-# rename()
+# rename(new = old)
 flights %>% 
-  select(year, month, day, tailnum) %>% 
+  select(year, month, day, tailnum) %>%
   rename(tail_num = tailnum)
 
 # everything() - useful to re-arrange variables
@@ -145,3 +146,41 @@ flights %>%
             hour = dep_time %/% 100,   # integer division
             minute = dep_time %% 100)  # remainder
 
+
+
+### group_by() and summarize()
+
+flights %>%
+  group_by(year, month, day) %>%
+  summarise(delay = mean(dep_delay, na.rm = TRUE))
+
+# group by, summarize and filter
+delays <- flights %>%
+  group_by(dest) %>%
+  summarise(
+    count = n(),
+    dist = mean(distance, na.rm = TRUE),
+    delay = mean(arr_delay, na.rm = TRUE)
+  ) %>%
+  filter(count > 20, dest != "HNL")
+# then plot
+ggplot(data = delays, mapping = aes(x = dist, y = delay)) +
+  geom_point(aes(size = count), alpha = 1/3) +
+  geom_smooth(se = FALSE)
+
+# everything at once
+flights %>%
+  group_by(dest) %>%
+  summarise(
+    count = n(),
+    dist = mean(distance, na.rm = TRUE),
+    delay = mean(arr_delay, na.rm = TRUE)
+  ) %>%
+  filter(count > 20, dest != "HNL") %>% 
+  ggplot(aes(x = dist, y = delay)) +
+  geom_point(aes(size = count), alpha = 1/3) +
+  geom_smooth(se = FALSE)
+
+
+flights %>% 
+  filter(dest != "HNL" & air_time < 60)
