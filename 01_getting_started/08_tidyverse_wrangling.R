@@ -29,6 +29,9 @@ vignette("tibble")
 cces_dataframe <- as.data.frame(cces)
 cces_tibble <- as_tibble(cces_dataframe)
 
+# which columns do have missing data (NA)
+colSums(is.na(cces))
+
 # drop rows with missing data
 cces <- drop_na(cces)
 
@@ -80,8 +83,8 @@ women_republicans_educ_employ <- cces %>%
 party <-
   recode(
     cces$pid7,
-    `1` = "Democrat",
-    `2` = "Democrat",
+    `1` = "Democrat",        # ensure all values have been recoded
+    `2` = "Democrat",        # missing values would be recoded as NA
     `3` = "Democrat",
     `4` = "Independent",
     `5` = "Republican",
@@ -104,9 +107,9 @@ cces$trump_approval
 
 rec_sen1_01 <- recode(
   cces$CC18_310b,
-  `1` = 0,
-  `5` = 0,
-  `2` = 1,
+  `1` = 0,         # never heard of senator
+  `5` = 0,         # not sure
+  `2` = 1,         # knows senator's name / party
   `3` = 1,
   `4` = 1
 )
