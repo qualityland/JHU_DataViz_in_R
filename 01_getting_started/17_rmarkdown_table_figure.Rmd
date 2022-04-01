@@ -2,7 +2,9 @@
 title: "New Report with kable and qplot"
 author: "Collin Paschall"
 date: "6/19/2020"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -22,9 +24,17 @@ dat<-drop_na(dat)
 # My first tables
 
 ```{r table1,echo=FALSE}
-kable(table(dat$gender),align="l")
+kable(table(dat$gender), align = "l")
+
 #?kable
-kable(summarise(dat,Mean=mean(dat$faminc_new),Median=median(dat$faminc_new)),align="l",label="Summary Statistics for Family Income")
+kable(summarise(
+  dat,
+  Mean = mean(dat$faminc_new),
+  Median = median(dat$faminc_new)
+),
+align = "l",
+label = "Summary Statistics for Family Income")
+
 ```
 
 # My first QPlots
@@ -36,13 +46,41 @@ See also the [documentation page for qplot.](https://ggplot2.tidyverse.org/refer
 ```{r plot1,echo=FALSE}
 data(mtcars)
 
-qplot(x=mpg,data=mtcars,geom="histogram",bins=5,main="Histogram Title",xlab="Miles Per Gallon")
+qplot(
+  x = mpg,
+  data = mtcars,
+  geom = "histogram",
+  bins = 5,
+  main = "Histogram Title",
+  xlab = "Miles Per Gallon"
+)
 
-qplot(x=mpg,data=mtcars,geom="density",main="Density Plot Title",xlab="Miles Per Gallon")
+qplot(
+  x = mpg,
+  data = mtcars,
+  geom = "density",
+  main = "Density Plot Title",
+  xlab = "Miles Per Gallon"
+)
 
-qplot(x=mpg,data=mtcars,geom="boxplot",main="Boxplot Title",xlab="Miles Per Gallon")
+qplot(
+  x = mpg,
+  data = mtcars,
+  geom = "boxplot",
+  main = "Boxplot Title",
+  xlab = "Miles Per Gallon"
+)
 
-qplot(x=wt,y=mpg,data=mtcars,geom="point",main="Scatterplot Title",xlab="Weight",ylab="Miles Per Gallon")
+qplot(
+  x = wt,
+  y = mpg,
+  data = mtcars,
+  geom = "point",
+  main = "Scatterplot Title",
+  xlab = "Weight",
+  ylab = "Miles Per Gallon"
+)
+
 ```
 
 
