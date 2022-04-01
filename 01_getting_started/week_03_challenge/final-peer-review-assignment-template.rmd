@@ -90,12 +90,13 @@ Display the first twenty elements of the new column you create.
 Put your code and solution here:
 
 ```{r problem7,include=TRUE,echo=TRUE}
-# this is still wrong!!!
 CC18_325a_support = recode(dat$CC18_325a,`1`=1,`2`=0)
-CC18_325b_support = recode(dat$CC18_325b,`1`=1,`2`=0)
+CC18_325d_support = recode(dat$CC18_325d,`1`=1,`2`=0)
 
 dat_new <-  dat %>% 
-  mutate(tax_scale = CC18_325a_support + CC18_325b_support)
+  select(CC18_325a, CC18_325d) %>% 
+  mutate(tax_scale = CC18_325a_support + CC18_325d_support)
+head(dat_new$tax_scale, 20)
 ```
 
 # Problem 8
