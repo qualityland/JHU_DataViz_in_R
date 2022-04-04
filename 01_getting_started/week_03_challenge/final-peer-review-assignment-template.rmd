@@ -29,7 +29,7 @@ Create a data frame that includes two columns. One column must have the numbers 
 Put your code and solution here:
 
 ```{r,problem2}
-my_dat <- data.frame(alpha = 1:5, beta = 6:10)
+(my_dat <- data.frame(alpha = 1:5, beta = 6:10))
 ```
 
 # Problem 3 
@@ -90,8 +90,8 @@ Display the first twenty elements of the new column you create.
 Put your code and solution here:
 
 ```{r problem7,include=TRUE,echo=TRUE}
-CC18_325a_support = recode(dat$CC18_325a,`1`=1,`2`=0)
-CC18_325d_support = recode(dat$CC18_325d,`1`=1,`2`=0)
+CC18_325a_support = recode(dat$CC18_325a, `1` = 1, `2` = 0)
+CC18_325d_support = recode(dat$CC18_325d, `1` = 1, `2` = 0)
 
 dat_new <-  dat %>% 
   select(CC18_325a, CC18_325d) %>% 
@@ -106,7 +106,7 @@ Use a frequency table command to show how many 0s, 1s, and 2s are in the column 
 Put your code and solution here:
 
 ```{r problem8,include=TRUE,echo=TRUE}
-#Put your code here, then delete this commented line before submission. Don't modify the setup code for this chunk - you want your code and output to both display.
+table(dat_new$tax_scale)
 ```
 
 # Problem 9
@@ -116,7 +116,9 @@ Again using all rows in the original dataset, use summarise and group_by to calc
 Put your code and solution here:
  
 ```{r problem9}
-#Put your code here, then delete this commented line before submission. Don't modify the setup code for this chunk - you want your code and output to both display.
+dat %>% 
+  group_by(region) %>% 
+  summarize(Trump_Approve_Mean = mean(CC18_308a))
 ```
  
 # Problem 10
