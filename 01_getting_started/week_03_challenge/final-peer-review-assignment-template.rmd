@@ -1,7 +1,9 @@
 ---
 title: "Final Report Exercise"
-author: "YOUR NAME"
-output: html_document
+author: "Stefan Schmidt"
+output:
+  html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -128,7 +130,12 @@ Again start with all rows in the original dataset, use summarise() to create a s
 Put your code and solution here:
 
 ```{r problem10}
-#Put your code here, then delete this commented line before submission. Don't modify the setup code for this chunk - you want your code and output to both display.
+dat %>% 
+  filter(investor == 2,
+         faminc_new %in% 5:10) %>% 
+  summarize("Mean Religion Imp." = mean(pew_religimp),
+            "Median Religion Imp." = median(pew_religimp),
+            "Standard Dev. Religion Imp." = sd(pew_religimp))
 ```
 
 # Problem 11
@@ -138,7 +145,9 @@ Use kable() and the the summarise() function to create a table with one row and 
 Put your code and solution here:
 
 ```{r problem11}
-#Put your code here, then delete this commented line before submission. Don't modify the setup code for this chunk - you want your code and output to both display.
+kable(dat %>% summarize("Mean" = mean(faminc_new),
+                        "Median" = median(faminc_new),
+                        "Std. Dev." = sd(faminc_new)))
 ```
 
 # Problem 12
@@ -150,5 +159,8 @@ Note: you can ignore the "stat_bin()" message that R generates when you draw thi
 Put your code and solution here:
 
 ```{r problem12,message=FALSE}
-#Put your code here, then delete this commented line before submission. Don't modify the setup code for this chunk - you want your code and output to both display.
+qplot(x = pid7,
+      data = dat,
+      xlab = "Seven Point Party ID",
+      ylab = "Count")
 ```
