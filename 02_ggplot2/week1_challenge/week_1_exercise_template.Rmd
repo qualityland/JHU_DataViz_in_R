@@ -38,6 +38,11 @@ Hints:
 # 
 cel %>% 
   filter(congress == 115) %>% 
+  mutate(Gender = recode(female, `0` = "Male", `1` = "Female")) %>% 
+  ggplot(aes(x = dwnom1, y = all_pass, color = Gender)) +
+  geom_point() +
+  labs(x = "Ideology",
+       y = "Bills Passed")
 ```
 
 ## Exercise 2
