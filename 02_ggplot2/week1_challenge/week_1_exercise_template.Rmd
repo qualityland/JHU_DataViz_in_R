@@ -34,8 +34,6 @@ Hints:
 * Make sure the axis labels are correct.
 
 ```{r exercise1,echo=FALSE}
-####PUT YOUR CODE HERE
-# 
 cel %>% 
   filter(congress == 115) %>% 
   mutate(Gender = recode(female, `0` = "Male", `1` = "Female")) %>% 
@@ -89,7 +87,11 @@ Hints:
 
 
 ```{r exercise3,echo=FALSE}
-
-####PUT YOUR CODE HERE
-
+cel %>% 
+  filter(congress == 115) %>% 
+  mutate(May_Min = recode(majority, `0` = "Minority", `1` = "Majority")) %>% 
+  ggplot(aes(x = May_Min, y = les)) +
+  geom_boxplot() +
+  labs(x = "Majority or Minority",
+       y = "Legislative Effectiveness") 
 ```
