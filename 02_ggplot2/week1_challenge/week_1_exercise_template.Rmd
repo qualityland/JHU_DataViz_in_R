@@ -65,7 +65,16 @@ Hints:
 
 
 ```{r exercise2,echo=FALSE}
-####PUT YOUR CODE HERE
+cel %>% 
+  filter(congress == 115) %>% 
+  mutate(Gender = recode(female, `0` = "Male", `1` = "Female")) %>% 
+  mutate(May_Min = recode(majority, `0` = "Minority", `1` = "Majority")) %>% 
+  ggplot(aes(x = votepct, y = all_pass, color = Gender)) +
+  geom_point() +
+  labs(x = "Vote Percentage",
+       y = "Bills Passed") +
+  scale_color_manual(values = c("orange", "green")) +
+  facet_wrap(~ May_Min)
 ```
 
 ## Exercise 3
