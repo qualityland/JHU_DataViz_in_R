@@ -76,6 +76,18 @@ cel %>%
   scale_fill_manual(values = c("blue", "red")) +
   guides(fill = FALSE)
 
+# or use recode() or ifelse()
+cel %>% 
+  filter(congress == 115) %>% 
+  #mutate(Dem_Rep = ifelse(dem, "Democrat", "Republican")) %>% 
+  mutate(Dem_Rep = recode(dem, `1`="Democrat", `0`="Republican")) %>% 
+  ggplot(aes(x = Dem_Rep, fill = Dem_Rep)) +
+  geom_bar() +
+  labs(x = "Party", y = "Number of Members") +
+  scale_fill_manual(values = c("blue", "red")) +
+  guides(fill = FALSE)
+
+
 
 # Making more barplots and manipulating more data in R
 
