@@ -31,7 +31,6 @@ cel %>%
   geom_bar()
 
 # let's go back and recode the dem variable to be a categorical variable
-
 party <- recode(cel$dem,
                 `1` = "Democrat",
                 `0` = "Republican")
@@ -95,19 +94,24 @@ cel %>%
 
 # a toy demonstration
 # a bowl of fruit
-apple <- rep("apple", 6)
-orange <- rep("orange", 3)
-banana <- rep("banana", 1)
+apples <- rep("apple", 6)
+oranges <- rep("orange", 3)
+bananas <- rep("banana", 1)
 
 # put together the fruits in a dataframe
 # creates a single columns with fruits
-fruit_bowl <- tibble("fruits" = c(apple, orange, banana))
+fruit_bowl <- tibble("fruit" = c(apples, oranges, bananas))
+
+
+# or with fruits in random order (use: sample())
+fruits <- sample(rep(c("apple", "orange", "banana"), c(6, 3, 1)))
+fruit_bowl <- tibble("fruit" = fruits)
 
 # Let's calculate proportions instead
 
 # create a table that counts fruits in a second column
 fruit_bowl_summary <- fruit_bowl %>%
-  group_by(fruits) %>%
+  group_by(fruit) %>%
   summarize("count" = n())
 
 fruit_bowl_summary
@@ -120,14 +124,14 @@ fruit_bowl_summary
 
 # add the geom_bar, using "stat" to tell command to plot the exact value
 # for proportion
-ggplot(fruit_bowl_summary, aes(x = fruits, y = proportion)) +
+ggplot(fruit_bowl_summary, aes(x = fruit, y = proportion)) +
   geom_bar(stat = "identity")
 
-ggplot(fruit_bowl_summary, aes(x = fruits, y = proportion, fill = fruits)) +
+ggplot(fruit_bowl_summary, aes(x = fruit, y = proportion, fill = fruit)) +
   geom_bar(stat = "identity") +
   scale_fill_manual(values = c("red", "yellow", "orange")) +
   guides(fill = FALSE) +
-  labs(x = "Fruits", y = "Proportion of Fruits")
+  labs(x = "Fruit", y = "Proportion of Fruit")
 
 
 
@@ -157,6 +161,10 @@ dem_rep <-
 table(dem_rep)
 
 cces <- add_column(cces, dem_rep)
+
+# simple bars for the regions
+ggplot(cces, aes(x = region)) +
+  geom_bar()
 
 # stacked bars
 ggplot(cces, aes(x = region, fill = dem_rep)) +
