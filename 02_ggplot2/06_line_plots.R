@@ -9,26 +9,26 @@ price <- rnorm(20, mean = 15, sd = 5)
 # put years and price together
 fig_data <- tibble("year" = years, "stock_price" = price)
 
-ggplot(fig_data, (aes(x = years, y = price))) +
+ggplot(fig_data,
+       aes(x = years,
+           y = price)) +
   geom_line()
 
 # make data for the first of two stocks
 fig_data$stock_id = rep("Stock_1", 20)
 
-stock_1_time_series <- fig_data
+(stock_1_time_series <- fig_data)
 
 # create data for the second company
 # same approach as with the last company
 stock_id <- rep("Stock_2", 20)
-
 years <- seq(from = 2001, to = 2020, by = 1)
-
 price <- rnorm(20, mean = 10, sd = 3)
 
-stock_2_time_series <-
+(stock_2_time_series <-
   tibble("stock_id" = stock_id,
          "year" = years,
-         "stock_price" = price)
+         "stock_price" = price))
 
 # combine with bind_rows()
 all_stocks_time_series <-
@@ -69,7 +69,7 @@ fig_data <- cel %>%
   group_by(Party, year) %>%
   summarize("Ideology" = mean(dwnom1, na.rm = T))
 
-View(fig_data)
+fig_data
 
 ggplot(fig_data,
        aes(x = year,
