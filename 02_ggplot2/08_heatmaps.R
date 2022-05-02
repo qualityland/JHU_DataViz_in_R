@@ -17,7 +17,6 @@ ggplot(dat, aes(x = X, y = Y, fill = Z)) +
   geom_tile()
 
 # practice again using a more substantive example
-
 players <- c("Michael", "LeBron", "Kobe")
 points <- c(35, 40, 45)
 assists <- c(10, 12, 5)
@@ -26,11 +25,12 @@ rebounds <- c(15, 12, 5)
 basketball <- tibble(players, points, assists, rebounds)
 
 # standardize the values
-
 basketball$stanardize_points <-
   basketball$points / max(basketball$points)
+
 basketball$stanardize_assists <-
   basketball$assists / max(basketball$assists)
+
 basketball$stanardize_rebounds <-
   basketball$rebounds / max(basketball$rebounds)
 
@@ -55,5 +55,8 @@ long_basketball_scaled <-
     values_to = "value"
   )
 
-ggplot(long_basketball_scaled, aes(x = players, y = stat, fill = value)) +
+ggplot(long_basketball_scaled,
+       aes(x = players,
+           y = stat,
+           fill = value)) +
   geom_tile()
