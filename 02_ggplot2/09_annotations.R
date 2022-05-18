@@ -54,7 +54,10 @@ cel %>%
   ggplot(aes(x = dwnom1, y = all_pass, label = thomas_name)) +
   geom_point() +
   # specify here that you only want the geom_text to apply to a subset of the data
-  geom_text(data = filter(cel, congress == 115 & all_pass > 8))
+  geom_text(data = filter(cel, congress == 115 & all_pass > 8),
+            nudge_x = 0.1,
+            nudge_y = 0.5
+            )
 
 # install.packages("ggrepel")
 library(ggrepel)

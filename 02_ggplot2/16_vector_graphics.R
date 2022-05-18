@@ -47,12 +47,11 @@ scatter_plot
 bar_plot
 
 # setwd(YOUR FILE PATH) -- file location when you ggsave them
-
-ggsave("lineplot.jpg", plot = line_plot)
-ggsave("lineplot.pdf", plot = line_plot)
+ggsave("./02_ggplot2/lineplot.jpg", plot = line_plot)
+ggsave("./02_ggplot2/lineplot.pdf", plot = line_plot)
 
 # to save files as .svg from ggsave
 #install.packages("svglite")
 library(svglite)
 
-ggsave("lineplot.svg", plot = line_plot)
+ggsave("./02_ggplot2/lineplot.svg", plot = line_plot)
