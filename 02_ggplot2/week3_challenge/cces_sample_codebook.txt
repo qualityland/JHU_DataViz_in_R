@@ -106,13 +106,10 @@ union: Are you a member of a labor union?
 2 I formerly was a member of a labor union
 3 I am not now, nor have I been, a member of a labor union
 	
-	
 investor: Do you personally (or jointly with a spouse), have any money invested in the stock market
 right now, either in an individual stock or in a mutual fund?
  1 Yes
  2 No
-	
-
 	
 CC18_308a Job approval – President Trump
 Do you approve or disapprove of the way each is doing their job...
@@ -121,9 +118,6 @@ Do you approve or disapprove of the way each is doing their job...
 3 Somewhat disapprove
 4 Strongly disapprove
 
-	
-
-	
 CC18_310a Party Recall + Name Recognition - Governor
 Please indicate whether you’ve heard of this person and if so which party he or she is affiliated
 with...
@@ -189,12 +183,3 @@ Congress considered many changes in tax law over the past two years. Do you supp
 oppose each of the following?
 1 Support
 2 Oppose
-
-
-	
-	
-	
-	
-	
-	
-	

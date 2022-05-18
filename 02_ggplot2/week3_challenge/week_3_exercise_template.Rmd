@@ -29,8 +29,21 @@ Put your figure here:
 ```{r exercise1,echo=FALSE}
 
 ####PUT YOUR CODE HERE
-  
-
+cces$Race = recode(cces$race,
+                  `1` = "White",
+                  `2` = "Black",
+                  `3` = "Hispanic",
+                  `4` = "Asian",
+                  `5` = "Native American",
+                  `6` = "Mixed",
+                  `7` = "Other",
+                  `8` = "Middle Eastern")
+ggplot(cces, aes(x = faminc_new)) +
+  geom_density() + 
+    labs(x = "Income Level",
+       y = "Density",
+       title = "Family Income and Race") +
+  facet_wrap(~ Race)
 ```
 
 ## Exercise 2
@@ -39,10 +52,13 @@ Explain what you are visualizing here:
 
 Put your figure here:
 
-```{r exercise2,echo=FALSE}
-
-####PUT YOUR CODE HERE
-  
+```{r exercise2, echo = FALSE}
+ggplot(cces, aes(educ, faminc_new, color = Race)) +
+  geom_jitter() +
+  labs(x = "Education",
+       y = "Income",
+       title = "Education and Family Income") +
+  facet_wrap( ~ Race)
 ```
 
 ## Exercise 3
