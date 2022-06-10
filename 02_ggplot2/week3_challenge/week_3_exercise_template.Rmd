@@ -24,6 +24,8 @@ Following the directions on the Coursera assignment page, you will make four ori
 
 Explain what you are visualizing here:
 
+Distribution of family income split up by race.
+
 Put your figure here:
 
 ```{r exercise1,echo=FALSE}
@@ -89,9 +91,12 @@ Put your figure here:
 #### Remove before uploading ####
 Your submission should include the following:
 
-- Using ggplot, create a scatter plot, a distribution figure 
-  (box plot, histogram, or density plot), bar plot, and line plot.
-- Use colors and facetting in at least one of your figures.
+- Using ggplot, create 
+OK  - a scatter plot,
+OK  - a distribution figure (box plot, histogram, or density plot),
+  - bar plot, and
+  - line plot.
+OK - Use colors and facetting in at least one of your figures.
 - Add a text annotation to at least one of the your figures.
 - Use a ggtheme for one of your figures.
 - Make sure your figures have titles and appropriately labeled axes.
