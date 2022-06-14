@@ -89,6 +89,8 @@ Put your figure here:
 ```{r exercise4,echo=FALSE}
 
 ####PUT YOUR CODE HERE
+ggplot(cel, aes(x = year, fill=female)) +
+  geom_bar(position = "stack")
 
 ```
 
