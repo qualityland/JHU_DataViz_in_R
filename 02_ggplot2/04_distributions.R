@@ -1,6 +1,11 @@
 library(tidyverse)
 
-cces<- read_csv(url("https://www.dropbox.com/s/ahmt12y39unicd2/cces_sample_coursera.csv?raw=1"))
+cces <-
+  read_csv(
+    url(
+      "https://www.dropbox.com/s/ahmt12y39unicd2/cces_sample_coursera.csv?raw=1"
+    )
+  )
 
 # boxplots
 

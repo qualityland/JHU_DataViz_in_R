@@ -44,7 +44,6 @@ ggplot(fig115, aes(x = seniority, y = all_pass)) +
        title = "Seniority and Bills Passed in the 115th Congress")
 
 # modify filter and select to grab "dem"
-
 fig115 <- cel %>%
   filter(congress == 115) %>%
   select("seniority", "all_pass", "dem")
@@ -73,7 +72,6 @@ ggplot(fig115, aes(x = seniority, y = all_pass, color = party)) +
        title = "Seniority and Bills Passed in the 115th Congress")
 
 # let's make the colors match traditional blue democrats and red republicans
-
 ggplot(fig115, aes(x = seniority, y = all_pass, color = party)) +
   geom_jitter() +
   labs(x = "Seniority",
@@ -82,7 +80,6 @@ ggplot(fig115, aes(x = seniority, y = all_pass, color = party)) +
   scale_color_manual(values = c("blue", "red"))
 
 # make two separate plots using facet_wrap
-
 ggplot(fig115, aes(x = seniority, y = all_pass, color = party)) +
   geom_jitter() +
   labs(x = "Seniority",
