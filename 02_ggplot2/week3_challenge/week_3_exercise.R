@@ -4,22 +4,59 @@ cces <- drop_na(read_csv(url("https://www.dropbox.com/s/ahmt12y39unicd2/cces_sam
 cel <- drop_na(read_csv(url("https://www.dropbox.com/s/4ebgnkdhhxo5rac/cel_volden_wiseman%20_coursera.csv?raw=1")))
 
 
+### Scatterplot ###
 
 ## Seniority and Bills Passed by Gender
-fig115 <- cel %>%
+cel115 <- cel %>%
   filter(congress == 115) %>%
-  select("seniority", "all_pass", "female")
+  select("seniority", "all_pass", "female") %>% 
+  mutate(Gender=recode(female, `1` = "Female", `0` = "Male"))
 
-Gender <- recode(fig115$female, `1` = "Female", `0` = "Male")
-ggplot(fig115, aes(x = seniority, y = all_pass, color = Gender)) +
+# differnet colors for gender
+ggplot(cel115, aes(x = seniority, y = all_pass, color = Gender)) +
   geom_jitter() +
   labs(x = "Seniority",
        y = "Bills Passed",
-       title = "Seniority and Bills Passed in the 115th Congress") #+
-  scale_color_manual(values = c(Male="black", Female="blue"))
+       title = "Seniority and Bills Passed in the 115th Congress")
+
+# separate plots for each gender
+# TODO: remove guide/legend
+ggplot(cel115, aes(x = seniority, y = all_pass, color = Gender)) +
+  geom_jitter() +
+  labs(x = "Seniority",
+       y = "Bills Passed",
+       title = "Seniority and Bills Passed in the 115th Congress",
+       subtitle = "by Gender") +
+  facet_wrap(~ Gender)
 
 
-  
+### Boxplot ###
+ggplot(cel115, aes(y = all_pass, x = Gender)) +
+  geom_boxplot() +
+  labs(x = "Gender",
+       y = "Bills Passed",
+       title = "Bills Passed in the 115th Congress",
+       subtitle = "by Gender")
+
+
+### Density ###
+# TODO remove guide/legend
+ggplot(cel115, aes(x = all_pass, fill = Gender, alpha = .5)) +
+  geom_density() +
+  labs(x = "Bills Passed",
+       y = "Density",
+       title = "Distribution of Bills Passed in the 115th Congress",
+       subtitle = "by Gender")
+
+### Histogram ###
+ggplot(cel115, aes(x = all_pass, fill = Gender)) +
+  geom_histogram(position = "dodge") +
+  labs(x = "Bills Passed",
+       y = "Count",
+       title = "Distribution of Bills Passed in the 115th Congress",
+       subtitle = "by Gender")
+
+
   
   ggplot(
     cel %>%
