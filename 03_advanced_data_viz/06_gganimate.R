@@ -13,19 +13,18 @@ data(mtcars)
 mtcars$gear
 
 # single static boxplot
-ggplot(mtcars, aes(x=factor(cyl), y=mpg)) +
+ggplot(mtcars, aes(x = factor(cyl), y = mpg)) +
   geom_boxplot()
 
 # facetted box plot
-ggplot(mtcars, aes(x=factor(cyl), y=mpg)) +
-  geom_boxplot()+
-  facet_wrap(~gear)
+ggplot(mtcars, aes(x = factor(cyl), y = mpg)) +
+  geom_boxplot() +
+  facet_wrap( ~ gear)
 
-my_anim<- ggplot(mtcars, aes(x=factor(cyl), y=mpg)) +
+my_anim <- ggplot(mtcars, aes(x = factor(cyl), y = mpg)) +
   geom_boxplot() +
   #  Here comes the gganimate code
-  transition_states(
-    gear)
+  transition_states(gear)
 
 my_anim
 
