@@ -12,71 +12,128 @@ cel115 <- cel %>%
   select("seniority", "all_pass", "female") %>% 
   mutate(Gender=recode(female, `1` = "Female", `0` = "Male"))
 
-# differnet colors for gender
-ggplot(cel115, aes(x = seniority, y = all_pass, color = Gender)) +
-  geom_jitter() +
-  labs(x = "Seniority",
-       y = "Bills Passed",
-       title = "Seniority and Bills Passed in the 115th Congress")
+# different colors for gender
+cel %>%
+  filter(congress == 115) %>%
+  select("seniority", "all_pass", "female") %>% 
+  mutate(Gender=recode(female, `1` = "Female", `0` = "Male")) %>% 
+  ggplot(aes(x = seniority, y = all_pass, color = Gender)) +
+    geom_jitter() +
+    labs(x = "Seniority",
+         y = "Bills Passed",
+         title = "Seniority and Bills Passed in the 115th Congress")
 
 # separate plots for each gender
-# TODO: remove guide/legend
-ggplot(cel115, aes(x = seniority, y = all_pass, color = Gender)) +
-  geom_jitter() +
-  labs(x = "Seniority",
-       y = "Bills Passed",
-       title = "Seniority and Bills Passed in the 115th Congress",
-       subtitle = "by Gender") +
-  facet_wrap(~ Gender)
+cel %>%
+  filter(congress == 115) %>%
+  select("seniority", "all_pass", "female") %>% 
+  mutate(Gender=recode(female, `1` = "Female", `0` = "Male")) %>% 
+  ggplot(aes(x = seniority, y = all_pass, color = Gender)) +
+    geom_jitter() +
+    labs(x = "Seniority",
+         y = "Bills Passed",
+         title = "Members Seniority and Bills Passed in the 115th Congress",
+         subtitle = "by Gender") +
+    facet_wrap(~ Gender) +
+  guides(color = "none")
 
 
 ### Boxplot ###
-ggplot(cel115, aes(y = all_pass, x = Gender)) +
-  geom_boxplot() +
-  labs(x = "Gender",
-       y = "Bills Passed",
-       title = "Bills Passed in the 115th Congress",
-       subtitle = "by Gender")
+cel %>%
+  filter(congress == 115) %>%
+  select("seniority", "all_pass", "female") %>% 
+  mutate(Gender=recode(female, `1` = "Female", `0` = "Male")) %>% 
+  ggplot(aes(y = all_pass, x = Gender)) +
+    geom_boxplot() +
+    labs(x = "Gender",
+         y = "Bills Passed",
+         title = "Distribution of Bills Passed in the 115th Congress",
+         subtitle = "by Gender")
 
 
 ### Density ###
-# TODO remove guide/legend
-ggplot(cel115, aes(x = all_pass, fill = Gender, alpha = .5)) +
-  geom_density() +
-  labs(x = "Bills Passed",
-       y = "Density",
-       title = "Distribution of Bills Passed in the 115th Congress",
-       subtitle = "by Gender")
+cel %>%
+  filter(congress == 115) %>%
+  select("seniority", "all_pass", "female") %>% 
+  mutate(Gender=recode(female, `1` = "Female", `0` = "Male")) %>% 
+  ggplot(aes(x = all_pass, fill = Gender, alpha = .5)) +
+    geom_density() +
+    scale_fill_manual(values = c(Female="orange", Male="gray")) +
+    labs(x = "Bills Passed",
+         y = "Density",
+         title = "Distribution of Bills Passed in the 115th Congress",
+         subtitle = "by Gender") +
+    guides(alpha = "none")
 
 ### Histogram ###
-ggplot(cel115, aes(x = all_pass, fill = Gender)) +
-  geom_histogram(position = "dodge") +
-  labs(x = "Bills Passed",
-       y = "Count",
-       title = "Distribution of Bills Passed in the 115th Congress",
-       subtitle = "by Gender")
+cel %>%
+  filter(congress == 115) %>%
+  select("seniority", "all_pass", "female") %>% 
+  mutate(Gender=recode(female, `1` = "Female", `0` = "Male")) %>% 
+  ggplot(aes(x = all_pass, fill = Gender)) +
+    geom_histogram(position = "dodge") +
+    labs(x = "Bills Passed",
+         y = "Count",
+         title = "Distribution of Bills Passed in the 115th Congress",
+         subtitle = "by Gender")
+
+
+### Barplot ###
+cel %>%
+  filter(congress == 115) %>%
+  mutate(Party=recode(dem, `1` = "Democrats", `0` = "Republicans")) %>% 
+  ggplot(aes(x = Party, fill=Party)) +
+  geom_bar() +
+  labs(
+    title = "Number of  Democrats and Republicans in the 115th Congress",
+    y = "Count") +
+  scale_fill_manual(values = c(Democrats="blue", Republicans="red")) +
+  guides(fill = "none")
+
+### Line Plot ###
+cel %>%
+  group_by(year) %>%
+  summarise(Democrats=sum(dem), Republicans=n() - sum(dem)) %>%
+  pivot_longer(cols = Democrats:Republicans,
+               names_to = "Party",
+               values_to = "Count") %>%
+  ggplot(aes(x = year,
+             y = Count,
+             color = Party)) +
+  geom_line() +
+  scale_color_manual(values = c(Democrats="blue", Republicans="red")) +
+  labs(x = "Year",
+       title = "Number of Democrats and Republicans in Congress",
+       subtitle = "1973 - 2017") +
+  theme_bw()
 
 
   
-  ggplot(
-    cel %>%
-      group_by(year) %>%
-      summarise(Female=sum(female), Male=n()-sum(female)) %>%
-      pivot_longer(
-        cols = Female:Male,
-        names_to = "isfemale",
-        values_to = "count"
-      ),
-    aes(x = year,y = count, group = isfemale, color = isfemale)) +
-    geom_line() +
-    scale_color_manual(values = c(Male="blue", Female="red")) +
-    labs(
-      x = "Year",
-      y = "Count",
-      color = "Gender",
-      title = "Number of Congresswomen between 1973 - 2017"
-    ) +
-    theme_bw()
+labs(x = "Seniority",
+     y = "Bills Passed",
+     title = "Seniority and Bills Passed in the 115th Congress") +
+  scale_color_manual(values = c("blue", "red"))
+
+
+ggplot(
+  cel %>%
+    group_by(year) %>%
+    summarise(Female=sum(female), Male=n()-sum(female)) %>%
+    pivot_longer(
+      cols = Female:Male,
+      names_to = "isfemale",
+      values_to = "count"
+    ),
+  aes(x = year,y = count, group = isfemale, color = isfemale)) +
+  geom_line() +
+  scale_color_manual(values = c(Male="blue", Female="red")) +
+  labs(
+    x = "Year",
+    y = "Count",
+    color = "Gender",
+    title = "Number of Congresswomen between 1973 - 2017"
+  ) +
+  theme_bw()
   
   
 

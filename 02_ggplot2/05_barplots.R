@@ -16,6 +16,12 @@ cel %>%
 # prove to yourself your bar plot is right by comparing with a frequency table:
 table(filter(cel, congress == 115)$dem)
 
+# or
+cel %>% 
+  filter(congress == 115) %>% 
+  select(dem) %>% 
+  table()
+
 
 # use st_name instead, so how counts of how many members of Congress from each state:
 cel %>%
@@ -24,7 +30,6 @@ cel %>%
   geom_bar()
 
 # flip the figure by setting y aesthetic rather than the x
-
 cel %>%
   filter(congress == 115) %>%
   ggplot(aes(y = st_name)) +
@@ -127,6 +132,10 @@ fruit_bowl_summary
 ggplot(fruit_bowl_summary, aes(x = fruit, y = proportion)) +
   geom_bar(stat = "identity")
 
+# geom_col does this by default
+ggplot(fruit_bowl_summary, aes(x = fruit, y = proportion)) +
+  geom_col()
+
 ggplot(fruit_bowl_summary, aes(x = fruit, y = proportion, fill = fruit)) +
   geom_bar(stat = "identity") +
   scale_fill_manual(values = c("red", "yellow", "orange")) +
@@ -137,12 +146,9 @@ ggplot(fruit_bowl_summary, aes(x = fruit, y = proportion, fill = fruit)) +
 
 # More practice with barplots!
 
-cces <-
-  read_csv(
-    url(
+cces <-read_csv(url(
       "https://www.dropbox.com/s/ahmt12y39unicd2/cces_sample_coursera.csv?raw=1"
-    )
-  )
+      ))
 
 # create counts of Ds, Rs, and Is by region
 

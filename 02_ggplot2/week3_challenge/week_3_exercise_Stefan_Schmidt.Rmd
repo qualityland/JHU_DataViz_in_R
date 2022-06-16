@@ -24,89 +24,98 @@ Following the directions on the Coursera assignment page, you will make four ori
 
 Explain what you are visualizing here:
 
-Distribution of family income split up by race.
+Ratio of female/male members  in the 115th congress.
 
 Put your figure here:
 
 ```{r exercise1,echo=FALSE}
-
-####PUT YOUR CODE HERE
-cces$Race = recode(cces$race,
-                  `1` = "White",
-                  `2` = "Black",
-                  `3` = "Hispanic",
-                  `4` = "Asian",
-                  `5` = "Native American",
-                  `6` = "Mixed",
-                  `7` = "Other",
-                  `8` = "Middle Eastern")
-ggplot(cces, aes(x = faminc_new)) +
-  geom_density() + 
-    labs(x = "Income Level",
-       y = "Density",
-       title = "Family Income and Race") +
-  facet_wrap(~ Race)
+cel %>%
+  filter(congress == 115) %>%
+  mutate(Gender=recode(female, `1` = "Female", `0` = "Male")) %>% 
+  ggplot(aes(x = Gender, fill=Gender)) +
+  geom_bar() +
+  labs(
+    title = "Gender Balance in the 115th Congress",
+    y = "Count") +
+  scale_fill_manual(values = c(Female="orange", Male="gray")) +
+  guides(fill = "none")
 ```
 
 ## Exercise 2
 
 Explain what you are visualizing here:
 
+Gender balance in congress between 1973 and 2017.
+
 Put your figure here:
 
 ```{r exercise2, echo = FALSE}
-ggplot(cces, aes(educ, faminc_new, color = Race)) +
-  geom_jitter() +
-  labs(x = "Education",
-       y = "Income",
-       title = "Education and Family Income") +
-  facet_wrap( ~ Race)
+cel %>%
+  group_by(year) %>%
+  summarise(Female=sum(female), Male=n() - sum(female)) %>%
+  pivot_longer(cols = Female:Male,
+               names_to = "Gender",
+               values_to = "Count") %>%
+  ggplot(aes(x = year,
+             y = Count,
+             color = Gender)) +
+  geom_line() +
+  scale_color_manual(values = c(Female="orange", Male="gray")) +
+  labs(x = "Year",
+       title = "Gender Balance in Congress",
+       subtitle = "1973 - 2017") +
+  theme_bw()
 ```
 
 ## Exercise 3
 
 Explain what you are visualizing here:
 
+How is the number of passed bills distributed and is there a difference in
+gender? Visualized for 115th congress.
+
 Put your figure here:
 
 ```{r exercise3,echo=FALSE}
-
-ggplot(cces, aes(x = edloan)) +
-  geom_bar() + 
-    labs(x = "Educational Loan",
-       y = "Count",
-       title = "Educational Loan and Race") +
-  facet_wrap(~ Race)
-
+cel %>%
+  filter(congress == 115) %>%
+  select("seniority", "all_pass", "female") %>% 
+  mutate(Gender=recode(female, `1` = "Female", `0` = "Male")) %>% 
+  ggplot(aes(x = all_pass, fill = Gender, alpha = .5)) +
+    geom_density() +
+    scale_fill_manual(values = c(Female="orange", Male="gray")) +
+    labs(x = "Bills Passed",
+         y = "Density",
+         title = "Distribution of Bills Passed in the 115th Congress",
+         subtitle = "by Gender") +
+    guides(alpha = "none")
 ```
 
 ## Exercise 4
 
 Explain what you are visualizing here:
 
+Does the productivity of a congress member (bills passed) depend on his/her
+seniority (year in congress) and is there a difference by gender?
+Visualized for 115th congress, with labeled top performers (bills passed > 10).
+
 Put your figure here:
 
 ```{r exercise4,echo=FALSE}
-
-####PUT YOUR CODE HERE
-ggplot(cel, aes(x = year, fill=female)) +
-  geom_bar(position = "stack")
-
+cel %>%
+  filter(congress == 115) %>%
+  select("seniority", "all_pass", "female", "thomas_name") %>% 
+  mutate(Gender=recode(female, `1` = "Female", `0` = "Male")) %>% 
+  ggplot(aes(x = seniority, y = all_pass, color = Gender)) +
+    geom_jitter() +
+    geom_text(aes(label=ifelse(all_pass > 10, thomas_name, ''),
+              hjust=-0.2,
+              vjust=-0.2)) +
+    labs(x = "Seniority",
+         y = "Bills Passed",
+         title = "Members Seniority and Bills Passed in the 115th Congress",
+         subtitle = "by Gender") +
+    scale_color_manual(values = c(Female="orange", Male="gray")) +
+    facet_wrap(~ Gender) +
+  guides(color = "none")
 ```
-
-
-#### Remove before uploading ####
-Your submission should include the following:
-
-- Using ggplot, create 
-OK  - a scatter plot,
-OK  - a distribution figure (box plot, histogram, or density plot),
-  - bar plot, and
-  - line plot.
-OK - Use colors and facetting in at least one of your figures.
-- Add a text annotation to at least one of the your figures.
-- Use a ggtheme for one of your figures.
-- Make sure your figures have titles and appropriately labeled axes.
-
-Upload a .html version of your R Markdown report as your submission.
-#### Remove before uploading ####
