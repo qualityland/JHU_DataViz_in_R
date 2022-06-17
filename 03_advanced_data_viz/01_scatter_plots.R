@@ -54,20 +54,18 @@ var2 <- var1 + rnorm(100, 1, .2)
 var3 <- var1 * (-rnorm(100, 1, .2))
 
 df <- tibble(var1, var2, var3)
-
+df
 ggpairs(df)
 
 # Customize the matrix figures
 
-# Write your own function for the scatterplot
-
+# write your own function for the scatterplot
 my_scatter <- function(data, mapping) {
   ggplot(data = data, mapping = mapping) +
     geom_jitter(color = "red")
 }
 
-# Write your own function for the density plot
-
+# write your own function for the density plot
 my_density <- function(data, mapping) {
   ggplot(data = data, mapping = mapping) +
     geom_density(alpha = .05,
@@ -75,7 +73,6 @@ my_density <- function(data, mapping) {
 }
 
 # substitute your functions for the functions that ggpairs() uses to draw the figures
-  
 ggpairs(
   df,
   lower = list(continuous = my_scatter),
@@ -89,31 +86,26 @@ ggpairs(
 library(ggcorrplot)
 library(ggthemes)
 
-# Use some example survey data
-
-df <- cces %>% select("educ", "pid7", "pew_religimp")
+# use some example survey data
+df <- cces %>%
+  select("educ", "pid7", "pew_religimp")
 
 # calculate correlation coefficients
-
 r <- cor(df, use = "complete.obs")
 
 # generate the correlation plot
-
 ggcorrplot(r)
 
 # show just the lower part of the figure (to avoid 1 correlations on the diagonals)
-
 ggcorrplot(r, type = "lower")
 
 # modify some visual elements
-
 ggcorrplot(r, type = "lower",
            title = "Correlations",
            colors = c("yellow", "green", "blue"),
            outline.color="purple")
 
-# Use a ggtheme if you want
-
+# use a ggtheme if you want
 ggcorrplot(r, type = "lower",
            title = "Correlations",
            ggtheme = theme_wsj())
@@ -123,19 +115,16 @@ ggcorrplot(r, type = "lower",
 # Cleveland Dot Plots
 # Adapted from https://r-graphics.org/recipe-bar-graph-dot-plot
 
-# Use some of the congress data
-
+# use some of the congress data
 cel_114 <- cel %>% filter(congress == 114)
 
 members <- sample_n(cel_114, 25)
 
 # points only
-
 ggplot(members, aes(x = les, y = thomas_name)) +
   geom_point()
 
-# Some refinements
-
+# some refinements
 ggplot(members, aes(x = les, y = reorder(thomas_name, les))) + # reorder in descending
   geom_point(size = 5) +
   theme(
@@ -145,8 +134,7 @@ ggplot(members, aes(x = les, y = reorder(thomas_name, les))) + # reorder in desc
   ) +
   labs(x = "Legislative Effectivness", y = "")
 
-# Lollipop figure
-
+# lollipop figure
 ggplot(members, aes(x = reorder(thomas_name, les), y = les)) +
   geom_point() +
   geom_segment(aes(
@@ -156,6 +144,7 @@ ggplot(members, aes(x = reorder(thomas_name, les), y = les)) +
     yend = les
   )) +
   theme(axis.text.x = element_text(angle = 90))
+
 
 # More temporal figures
 
@@ -172,12 +161,10 @@ time <- seq(1:10)
 df <- tibble(var1, time)
 
 # just filling in the space under the line
-
 ggplot(df, aes(x = time, y = var1)) +
   geom_area() # color in the area under the line
 
 # a little aesthetic tweaking
-
 ggplot(df, aes(x = time, y = var1, fill = "red")) + # set the color
   geom_area() +
   guides(fill = FALSE) # drop legend
@@ -186,8 +173,7 @@ ggplot(df, aes(x = time, y = var1, fill = "red")) + # set the color
 
 # adapted from https://r-graphics.org/recipe-line-graph-stacked-area
 
-# Create fake data for three people at three different time points
-
+# create fake data for three people at three different time points
 Bob <- tibble(
   person = rep("Bob", 5),
   time = seq(1:5),
@@ -208,9 +194,9 @@ Lisa <-
   )
 
 df <- bind_rows(Bob, Sue, Lisa)
+df
 
 # plot the stacked lineplot
-
 ggplot(df, aes(x = time, y = change, fill = person)) +
   geom_area()
 
@@ -220,11 +206,15 @@ df_wide <- df %>%
               values_from = change,
               names_from = person)
 
+df_wide
+
 # note that the stacked areas add up to the totals
 df_wide$total <-
   df_wide$Bob +
   df_wide$Sue +
   df_wide$Lisa
+
+df_wide$total
 
 # Dumbbell charts
 # Adapted from https://rkabacoff.github.io/datavis/Time.html#dumbbell-charts
@@ -232,15 +222,16 @@ df_wide$total <-
 #install.packages("ggalt")
 library(ggalt)
 
-# reformat the fake data from the stacked area chart, so we are comparing times at 1 and 5 for Bob, Sue, and Lisa
-
+# reformat the fake data from the stacked area chart, so we are comparing times
+# at 1 and 5 for Bob, Sue, and Lisa
 df2 <- df %>%
   filter(time == 1 | time == 5) %>%
   pivot_wider(names_from = time, values_from = change) %>%
   rename(year1 = `1`, year5 = `5`)
 
-# basic dumbbell chart
+df2
 
+# basic dumbbell chart
 ggplot(df2,
        aes(y = person,
            x = year1,      # the starting point, earliest time
@@ -248,7 +239,6 @@ ggplot(df2,
   geom_dumbbell()   # connects the points
 
 # reorder the y axis
-
 ggplot(df2,
        aes(
          y = reorder(person, year1), # reorders the y axis
@@ -258,7 +248,6 @@ ggplot(df2,
   geom_dumbbell()
 
 # change the colors and sizes
-
 ggplot(df2,
        aes(y=reorder(person,year1), # reorders the y axis
            x=year1,
@@ -271,7 +260,6 @@ ggplot(df2,
   )
 
 # clean the axis labels
-
 ggplot(df2,
        aes(
          y = reorder(person, year1),
@@ -295,10 +283,9 @@ ggplot(df2,
 #install.packages("ggalluvial")
 library("ggalluvial")
 
-# Let's create some fake data about student performance in classes
-# 21 students are divided in 3 groups, they are men and women, and they get High Pass, Pass, or Fail
-
-
+# let's create some fake data about student performance in classes
+# 21 students are divided in 3 groups, they are men and women,
+# and they get High Pass, Pass, or Fail
 group1 <- tibble(groupid = groupid <- rep("group1", 7),
                studentID = sample(seq(from = 1, to = 20), 7),
                gender = sample(c("M", "F"), 7 , replace = TRUE),
@@ -315,11 +302,15 @@ group3 <- tibble(groupid = groupid <- rep("group3", 7),
                grades = sample(c("High Pass", "Pass", "Fail"), 7, replace = TRUE))
 
 students <- bind_rows(group1, group2, group3)
+students
 
-# Summarize data
+# summarize data
 students_table <- students %>%
   group_by(groupid, gender, grades) %>%
   count()
+
+students_table
+
 
 # barebones alluvial
 ggplot(students_table,
@@ -365,8 +356,8 @@ ggplot(students_table,
 #install.packages("packcircles")
 library(packcircles)
 
-# Use congress data as an example
-# Sample a number of members from the 114th Congress
+# use congress data as an example
+# sample a number of members from the 114th Congress
 cel_114 <- cel %>% filter(congress == 114)
 members <- sample_n(cel_114, 25)
 
