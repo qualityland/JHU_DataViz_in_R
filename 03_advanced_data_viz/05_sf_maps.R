@@ -32,23 +32,23 @@ ggplot() +
 
 # read in a geojson
 
-# SET YOUR WORKING DIRECTORY TO THE FOLDER WHERE THE GEOJSON AND ASSOCIATED FILES ARE LOCATED.
+# SET YOUR WORKING DIRECTORY TO THE FOLDER WHERE THE GEOJSON AND ASSOCIATED
+# FILES ARE LOCATED.
 
 # setwd("YOUR DIRECTORY PATH HERE")
 
 seattle_counties <- read_sf("wa_msa_counties.geojson")
 
-# note here that you can put the data into the ggplot() function or the geom_sf() function
+# note here that you can put the data into the ggplot() function or the
+# geom_sf() function
 ggplot(data = seattle_counties) +
   geom_sf()
 
 # use a subset of census data states to draw data into sf maps
-
 states
 
 # these two filter commands generate the same data
 # my_states <- filter(states,STUSPS=="NE" | STUSPS=="KS" | STUSPS=="IA" |STUSPS=="MO")
-
 my_states <- filter(states, STATEFP==31 | STATEFP==29 | STATEFP==20 |STATEFP==19)
 
 ggplot(my_states) + geom_sf()
@@ -59,7 +59,9 @@ dummy_qual <-
   data.frame("STATEFP" = c("31", "29", "20", "19"),
              qual = c(LETTERS[1:4]))
 
-# tip: you have to put quotation marks around the FIPS code when you create this dataframe, because the STATEFP column in my_states is a <chr> variable. the class of the two matching columns must be the same
+# tip: you have to put quotation marks around the FIPS code when you create
+# this dataframe, because the STATEFP column in my_states is a <chr> variable.
+# the class of the two matching columns must be the same
 
 my_states <- left_join(my_states, dummy_qual, by = "STATEFP")
 
@@ -79,7 +81,10 @@ ggplot(my_states) + geom_sf(aes(fill = quant))
 
 cities <- maps::world.cities
 
-my_cities <- filter(cities, name=="Omaha" | name=="Cedar Rapids" | name=="Topeka"|name=="Joplin")
+my_cities <- 
+  filter(
+    cities,
+    name=="Omaha" | name=="Cedar Rapids" | name=="Topeka"|name=="Joplin")
 # tip: be careful, more than one city can have the same name!
 
 
@@ -90,4 +95,6 @@ library(ggrepel)
 ggplot() + geom_sf(data = my_states) +
   geom_point(data = my_cities, aes(x = long, y = lat)) +
   geom_text_repel(data = my_cities, aes(x = long, y = lat, label = name))
-# tip: because you are using three separate data files here, you have to put the data into each geom commands - you don't want the data to be inherited from ggplot() 
+# tip: because you are using three separate data files here, you have to put
+# the data into each geom commands - you don't want the data to be inherited
+# from ggplot() 
