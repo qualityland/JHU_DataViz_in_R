@@ -79,8 +79,23 @@ Measurement<-rnorm(32,50,1)
 ####Hint: set the colors for the city points with scale_color_distiller(palette=7)
 
 ####Hint: set the size of all points to the value 5
+mid_am <- 
+  filter( my_world_map, region %in% c("Costa Rica", "Panama", "Nicaragua"))
 
+mid_am_cities <- 
+  filter(
+    maps::world.cities,
+    country.etc %in% c("Costa Rica", "Panama", "Nicaragua"),
+    pop > 40000) %>% 
+  add_column(Measurement)
 
+ggplot(data = mid_am,
+       mapping = aes(x = long, y = lat, group = group)) +
+  geom_polygon(color = "black", fill = "white") +
+  geom_point(data = mid_am_cities,
+             aes(x = long, y = lat, group = NULL, color = Measurement),
+             size = 5) +
+  scale_color_distiller(palette=7)
 ```
 
 ## Problem 3

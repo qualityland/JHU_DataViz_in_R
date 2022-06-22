@@ -47,13 +47,31 @@ Measurement<-rnorm(32,50,1)
 # Make sure you load any necessary libraries
 
 # HINT:
-# - use a filter command to get just maps of Costa Rica, Panama, and Nicaragua
-# - use a filter command to put in points only for cities with a population of
+# OK - use a filter command to get just maps of Costa Rica, Panama, and Nicaragua
+# OK - use a filter command to put in points only for cities with a population of
 #   greater than 40,000. This should leave you with 32 cities.
-# - use add_column to attach the "Measurement" variable to your data, and set
+# OK - use add_column to attach the "Measurement" variable to your data, and set
 #   that to the color aesthetic when you draw the points.
-# - set the colors for the city points with scale_color_distiller(palette=7)
+# OK - set the colors for the city points with scale_color_distiller(palette=7)
 # - set the size of all points to the value 5
+mid_am <- 
+  filter( my_world_map, region %in% c("Costa Rica", "Panama", "Nicaragua"))
+
+mid_am_cities <- 
+  filter(
+    maps::world.cities,
+    country.etc %in% c("Costa Rica", "Panama", "Nicaragua"),
+    pop > 40000) %>% 
+  add_column(Measurement)
+
+ggplot(data = mid_am,
+       mapping = aes(x = long, y = lat, group = group)) +
+  geom_polygon(color = "black", fill = "white") +
+  geom_point(data = mid_am_cities,
+             aes(x = long, y = lat, group = NULL, color = Measurement),
+             size = 5) +
+  scale_color_distiller(palette=7)
+
 
 
 
