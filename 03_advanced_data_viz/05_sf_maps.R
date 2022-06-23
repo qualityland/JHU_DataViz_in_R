@@ -8,7 +8,7 @@ library(sf)
 
 # Have all associated files in your working directory
 
-# setwd("YOUR DIRECTORY PATH HERE")
+setwd("~/tmp/tl_2019_us_state")
 
 
 states <- read_sf("tl_2019_us_state.shp")

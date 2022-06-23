@@ -34,9 +34,6 @@ ggplot(data = map_data_combined,
   scale_fill_distiller(palette=5)
 
 
-
-
-
 ### Problem 2 ###
 # Create the following figure, using the data included in the R Markdown file.
 
@@ -73,10 +70,6 @@ ggplot(data = mid_am,
   scale_color_distiller(palette=7)
 
 
-
-
-
-
 ### Problem 3 ###
 # Create the following figure, using the data included in the R Markdown file.
 # Note that the code in the .rmd file will import a set of simple features data for South America. Make sure you install any necessary packages. 
@@ -90,8 +83,6 @@ library(rgeos)
 # DO NOT MODIFY
 s_america<-ne_countries(scale="medium",continent='south america',returnclass="sf")
 
-
-
 # make sure you load any necessary libraries
 
 # HINT
@@ -101,7 +92,6 @@ s_america<-ne_countries(scale="medium",continent='south america',returnclass="sf
 # - use scale_fill_distiller and palette 10 to the match the colors.
 
 # PUT YOUR CODE HERE
-
-
-
-
+ggplot() +
+  geom_sf(data = s_america, aes(fill = pop_est)) +
+  scale_fill_distiller(palette=10)
