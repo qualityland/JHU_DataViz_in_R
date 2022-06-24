@@ -3,13 +3,11 @@
 
 library(tidyverse)
 library(gganimate)
-library(gifski)
+#library(gifski)
 library(transformr)
 
 # this example from gganimate documentation
-
 data(mtcars)
-
 mtcars$gear
 
 # single static boxplot
