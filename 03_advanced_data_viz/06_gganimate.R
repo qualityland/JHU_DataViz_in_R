@@ -3,7 +3,7 @@
 
 library(tidyverse)
 library(gganimate)
-#library(gifski)
+library(gifski)
 library(transformr)
 
 # this example from gganimate documentation
@@ -29,40 +29,55 @@ my_anim
 ?transition_states
 
 # Example of transition_time
-
 ?transition_time
 
-cel <- read_csv(url("https://www.dropbox.com/s/4ebgnkdhhxo5rac/cel_volden_wiseman%20_coursera.csv?raw=1"))
+cel <- 
+  read_csv(
+    url(
+      "https://www.dropbox.com/s/4ebgnkdhhxo5rac/cel_volden_wiseman%20_coursera.csv?raw=1"
+      )
+    )
 
 # Plot total number of D and Rs across Congresses
+cel$party <- recode(cel$dem, `1` = "Democrat", `0` = "Republican")
 
-cel$party<-recode(cel$dem,`1`="Democrat",`0`="Republican")
+cong_dat <- cel %>%
+  group_by(year, party) %>%
+  summarise("Seats" = n())
 
-cong_dat<- cel %>% 
-  group_by(year,party) %>%
-  summarise("Seats"=n())
-
-anim2<-ggplot(cong_dat,aes(x=year,y=Seats,fill=party))+
-  geom_bar(stat="identity")+
-  geom_hline(yintercept=217)+
-  scale_fill_manual(values=c("blue","red"))+
+anim2 <- ggplot(cong_dat, aes(x = year, y = Seats, fill = party)) +
+  geom_bar(stat = "identity") +
+  geom_hline(yintercept = 217) +
+  scale_fill_manual(values = c("blue", "red")) +
   transition_time(year)
+
+anim2
 
 # transition_layers
 ?transition_layers
 
-ggplot()+
-  geom_jitter(aes(x=seniority,y=all_pass,color=party),data=filter(cel,congress==115 & party=="Democrat"))+
-  geom_jitter(aes(x=seniority,y=all_pass,color=party),data=filter(cel,congress==115 & party=="Republican"))+
-  geom_smooth(aes(x=seniority,y=all_pass,color=party),data=filter(cel,congress==115 & party=="Democrat"))+
-  geom_smooth(aes(x=seniority,y=all_pass,color=party),data=filter(cel,congress==115 & party=="Republican"))+
-  scale_color_manual(values=c("blue","red"))+
+ggplot() +
+  geom_jitter(
+    aes(x = seniority, y = all_pass, color = party),
+    data = filter(cel, congress == 115 & party == "Democrat")
+  ) +
+  geom_jitter(
+    aes(x = seniority, y = all_pass, color = party),
+    data = filter(cel, congress == 115 & party == "Republican")
+  ) +
+  geom_smooth(
+    aes(x = seniority, y = all_pass, color = party),
+    data = filter(cel, congress == 115 & party == "Democrat")
+  ) +
+  geom_smooth(
+    aes(x = seniority, y = all_pass, color = party),
+    data = filter(cel, congress == 115 & party == "Republican")
+  ) +
+  scale_color_manual(values = c("blue", "red")) +
   transition_layers()
-  
 
 
 # entering and exiting
-
 ggplot(mtcars, aes(factor(cyl), mpg)) +
   geom_boxplot()
 
@@ -78,19 +93,16 @@ anim1 <- anim +
 anim1
 
 # shadowing
-
-anim3<-ggplot(cong_dat,aes(x=year,y=Seats,fill=party))+
-  geom_bar(stat="identity")+
-  geom_hline(yintercept=217)+
-  scale_fill_manual(values=c("blue","red"))+
-  transition_time(year)+
-  shadow_wake(wake_length=1,alpha=FALSE,wrap=FALSE)
+anim3 <- ggplot(cong_dat, aes(x = year, y = Seats, fill = party)) +
+  geom_bar(stat = "identity") +
+  geom_hline(yintercept = 217) +
+  scale_fill_manual(values = c("blue", "red")) +
+  transition_time(year) +
+  shadow_wake(wake_length = 1,
+              alpha = FALSE,
+              wrap = FALSE)
 
 anim3
 
 # the animation will save to your working directory
-anim_save("test.gif",animation=anim3)
-
-
-
-
+anim_save("test.gif", animation = anim3)
