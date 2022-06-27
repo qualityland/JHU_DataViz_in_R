@@ -1,9 +1,10 @@
 library(shiny)
 library(tidyverse)
 
-####data import
+# data import
 
-####VERY IMPORTANT: best practice is to have your .csv or other data file in the same directory as your .r file for the shiny app
+# VERY IMPORTANT: best practice is to have your .csv or other data file
+# in the same directory as your .R file for the shiny app.
 
 setwd("~/Dropbox/data_viz_coursera_4/shiny_lecture_code")
 dat<-read_csv("cel_volden_wiseman_coursera.csv")
@@ -12,7 +13,7 @@ dat <- dat%>%select(c(Congress=congress,Ideology=dwnom1,Party=dem))
 dat$Party <- recode(dat$Party,`1`="Democrat",`0`="Republican")
 dat=drop_na(dat)
 
-####make the static figure for practice - this won't be displayed
+# make the static figure for practice - this won't be displayed
 
 ggplot(
   dat,
@@ -24,7 +25,7 @@ ggplot(
   scale_fill_manual(values=c("blue","red"))+
   scale_color_manual(values=c("blue","red"))
   
-####Add facet wrap to see change over time
+# add facet wrap to see change over time
 ggplot(
   dat,
   aes(x=Ideology,color=Party,fill=Party))+
@@ -36,13 +37,13 @@ ggplot(
   scale_color_manual(values=c("blue","red"))+
   facet_wrap(~Congress)
 
-# Define UI for application that draws a figure
+# define UI for application that draws a figure
 ui <- fluidPage(
   
-  # Application title
+  # application title
   titlePanel("Ideology in Congress"),
   
-  # Sidebar with a slider input for number of bins 
+  # sidebar with a slider input for number of bins 
   sidebarLayout(
     sidebarPanel(
       sliderInput("my_cong",
@@ -52,7 +53,7 @@ ui <- fluidPage(
                   value = 93)
     ),
     
-    # Show a plot of the generated distribution
+    # show a plot of the generated distribution
     mainPanel(
       plotOutput("congress_distplot")
     )
@@ -65,9 +66,9 @@ server <- function(input, output) {
     
     ggplot(
       filter(dat,Congress==input$my_cong),
-      #####if the slider was set to the 93,  this filter line would look like:
+      # if the slider was set to the 93,  this filter line would look like:
       #filter(dat,Congress==93),
-      #The value from the slider, assigned to "my_cong" in the UI goes into input$my_cong in the server function.
+      # the value from the slider, assigned to "my_cong" in the UI goes into input$my_cong in the server function.
       
       aes(x=Ideology,color=Party,fill=Party))+
       geom_density(alpha=.5)+
@@ -79,5 +80,5 @@ server <- function(input, output) {
   })
 }
 
-# Run the application 
+# run the application 
 shinyApp(ui = ui, server = server)

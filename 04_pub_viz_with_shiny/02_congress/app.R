@@ -1,11 +1,50 @@
 library(shiny)
+library(tidyverse)
+
+# data import
+
+# VERY IMPORTANT: best practice is to have your .csv or other data file
+# in the same directory as your .R file for the shiny app.
+
+setwd("~/wrk/studio/JHU_DataViz_in_R/04_pub_viz_with_shiny")
+dat <- read_csv("cel.csv")
+
+dat <-
+  dat %>%
+  mutate(
+    Congress = congress,
+    Ideology = dwnom1,
+    Party = recode(dem, `1` = "Democrat", `0` = "Republican")
+  ) %>%
+  select(Congress, Ideology, Party) %>%
+  drop_na()
+
+# make the static figure for practice - this won't be displayed
+ggplot(dat,
+       aes(x = Ideology, color = Party, fill = Party)) +
+  geom_density(alpha = .5) +
+  xlim(-1.5, 1.5) +
+  xlab("Ideology - Nominate Score") +
+  ylab("Density") +
+  scale_fill_manual(values = c("blue", "red")) +
+  scale_color_manual(values = c("blue", "red"))
+
+# add facet wrap to see change over time
+ggplot(dat,
+       aes(x = Ideology, color = Party, fill = Party)) +
+  geom_density(alpha = .5) +
+  xlim(-1.5, 1.5) +
+  xlab("Ideology - Nominate Score") +
+  ylab("Density") +
+  scale_fill_manual(values = c("blue", "red")) +
+  scale_color_manual(values = c("blue", "red")) +
+  facet_wrap( ~ Congress)
+
 
 ui <- fluidPage(
 
-    # Application title
     titlePanel("Ideology in Congress"),
 
-    # Sidebar with a slider input for number of bins 
     sidebarLayout(
         sidebarPanel(
             sliderInput("congress",
@@ -15,24 +54,24 @@ ui <- fluidPage(
                         value = 104)
         ),
 
-        # Show a plot of the generated distribution
         mainPanel(
            plotOutput("distPlot")
         )
     )
 )
 
-# Define server logic required to draw a histogram
+# Define server logic required to draw a density plot
 server <- function(input, output) {
 
     output$distPlot <- renderPlot({
-        # generate bins based on input$bins from ui.R
-        x    <- faithful[, 2]
-        bins <- seq(min(x), max(x), length.out = input$bins + 1)
-
-        # draw the histogram with the specified number of bins
-        hist(x, breaks = bins, col = 'darkgray', border = 'white')
-    })
+      ggplot(filter(dat, Congress == input$congress),
+             aes(x = Ideology, color = Party, fill = Party)) +
+        geom_density(alpha = .5) +
+        xlim(-1.5, 1.5) +
+        xlab("Ideology - Nominate Score") +
+        ylab("Density") +
+        scale_fill_manual(values = c("blue", "red")) +
+        scale_color_manual(values = c("blue", "red"))    })
 }
 
 # Run the application 
