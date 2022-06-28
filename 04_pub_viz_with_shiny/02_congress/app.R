@@ -22,7 +22,7 @@ dat <-
 # make the static figure for practice - this won't be displayed
 ggplot(dat,
        aes(x = Ideology, color = Party, fill = Party)) +
-  geom_density(alpha = .5) +
+  geom_density(alpha = 0.5) +
   xlim(-1.5, 1.5) +
   xlab("Ideology - Nominate Score") +
   ylab("Density") +
@@ -51,7 +51,7 @@ ui <- fluidPage(
                         "Congress:",
                         min = 93,
                         max = 114,
-                        value = 104)
+                        value = 93)
         ),
 
         mainPanel(
@@ -64,9 +64,9 @@ ui <- fluidPage(
 server <- function(input, output) {
 
     output$distPlot <- renderPlot({
-      ggplot(filter(dat, Congress == input$congress),
+      ggplot(filter(dat, Congress == input$congress),  # congress filter
              aes(x = Ideology, color = Party, fill = Party)) +
-        geom_density(alpha = .5) +
+        geom_density(alpha = 0.5) +
         xlim(-1.5, 1.5) +
         xlab("Ideology - Nominate Score") +
         ylab("Density") +
