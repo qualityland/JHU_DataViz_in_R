@@ -1,20 +1,20 @@
 library(shiny)
 library(tidyverse)
 
-#####DO NOT set your working directory in this app. This is will cause a problem when you try to upload the app online.
+# DO NOT set your working directory in this app. This is will cause a problem when you try to upload the app online.
 
-#setwd("~/Dropbox/data_viz_coursera_4/shiny_lecture_code")
+# setwd("~/Dropbox/data_viz_coursera_4/shiny_lecture_code")
 
 dat<-read_csv("publish_practice.csv")
 
-####this is just here for practice - it's what the final app is going to look like, as a static figure.
+# this is just here for practice - it's what the final app is going to look like, as a static figure.
 dat %>% ggplot(aes(x=varX,y=varY,color=Group))+geom_point()
 
 # Define UI for application
 ui <- fluidPage(
   
-  #####Minimal sidebarLayout example:
-  ####sidebarLayout(sidebarPanel(),mainPanel())
+  # minimal sidebarLayout example:
+  # sidebarLayout(sidebarPanel(),mainPanel())
   
   sidebarLayout(
     sidebarPanel(
@@ -32,7 +32,7 @@ ui <- fluidPage(
   )
 
 
-# Define server logic 
+# define server logic 
 server <- function(input, output) {
   
   output$scatter<-renderPlot({
@@ -48,12 +48,12 @@ server <- function(input, output) {
 }
 
 
-# Run the application 
+# run the application 
 shinyApp(ui = ui, server = server)
 
 
 
-########This is the code used to generate the practice data
+# This is the code used to generate the practice data
 # 
 #  varX<-seq(1:100)
 #  varY<-varX+rnorm(100,10,10)
