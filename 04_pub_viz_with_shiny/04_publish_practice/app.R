@@ -11,13 +11,14 @@ ggplot(dat, aes(x = varX, y = varY, color = Group)) +
 ui <- fluidPage(
 
     # title
-    titlePanel("Old Faithful Geyser Data"),
+    titlePanel("Dependency of Y on X for different Groups"),
 
     # sidebar with radio buttons 
     sidebarLayout(
         sidebarPanel(
-            radioButtons(inputId = "group",
-                         label = "Group",
+            checkboxGroupInput(inputId = "group",
+                         label = "Select groups to display:",
+                         selected = c("a", "b", "c"),
                          choices = c("a", "b", "c"))
         ),
 
@@ -33,9 +34,10 @@ server <- function(input, output) {
 
     output$scatterPlot <- renderPlot({
         # draw the scatter plot for selected group
-        ggplot(filter(dat, Group == input$group),  # group filter
+        ggplot(filter(dat, Group %in% input$group),  # group filter
                aes(x = varX, y = varY, color = Group)) +
-          geom_point()
+          geom_point() +
+        labs(y = "y", x = "x")
     })
 }
 
