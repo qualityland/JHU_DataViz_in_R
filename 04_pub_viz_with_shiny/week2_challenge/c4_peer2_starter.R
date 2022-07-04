@@ -3,7 +3,7 @@ library(tidyverse)
 library(plotly)
 library(DT)
 
-#####Import Data
+# import Data
 
 dat <- read_csv(url("https://www.dropbox.com/s/uhfstf6g36ghxwp/cces_sample_coursera.csv?raw=1"))
 dat <- dat %>% select(c("pid7","ideo5","newsint","gender","educ","CC18_308a","region"))
@@ -14,31 +14,37 @@ dat <- drop_na(dat)
 ui <- navbarPage(
   title="My Application",
   tabPanel("Page 1",
-    # sidebar layout
     sidebarLayout(
-      # sidebar panel
       sidebarPanel(
-        # slider
         sliderInput(
           "ideology",
           "Select Five Point Ideology (1=Very liberal, 5=Very conservative):",
-          min = 1,
-          max = 5,
-          value = 3
-        )
-      ),
+          min = 1, max = 5, value = 3)),
        
-      # main panel
       mainPanel(
         tabsetPanel(
           tabPanel("Tab1", plotOutput("partyBarPlot")), 
-          tabPanel("Tab2", plotOutput("trumpBarPlot"))
-        )
+          tabPanel("Tab2", plotOutput("trumpBarPlot")))
       )
     )
   ),
+
   tabPanel("Page 2",
+    sidebarLayout(
+      sidebarPanel(
+        checkboxGroupInput(
+          inputId = "gender",
+          label = "Select Gender:",
+          choices = c(1, 2)
+        )
+      ),
+             
+      mainPanel(
+       plotOutput("scatterPlot")
+      )
+    )
   ),
+
   tabPanel("Page 3",
   ),
 )
@@ -53,7 +59,6 @@ server<-function(input,output){
   
   # partyBarPlot
   output$partyBarPlot <- renderPlot({
-    # draw the scatter plot for selected group
     ggplot(filter(dat, ideo5 == input$ideology),  # group filter
            aes(x = pid7)) +
       geom_bar() +
@@ -63,13 +68,22 @@ server<-function(input,output){
   
   # trumpBarPlot
   output$trumpBarPlot <- renderPlot({
-    # draw the scatter plot for selected group
     ggplot(filter(dat, ideo5 == input$ideology),  # group filter
            aes(x = CC18_308a)) +
       geom_bar() +
       labs(x = "Trump Support",
            y = "Count")
   })
+  
+    
+  # scatterPlot
+  output$scatterPlot <- renderPlot({
+    ggplot(filter(dat, gender %in% input$gender),  # group filter
+           aes(x = educ, y = pid7)) +
+      geom_jitter() +
+      geom_smooth(method = lm)
+  })
+  
   
 } 
 
