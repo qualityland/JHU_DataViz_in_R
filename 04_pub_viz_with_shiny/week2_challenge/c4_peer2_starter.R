@@ -46,6 +46,20 @@ ui <- navbarPage(
   ),
 
   tabPanel("Page 3",
+    sidebarLayout(
+      sidebarPanel(
+        selectInput(
+          inputId = "region",
+          label = "Select Region:",
+          multiple = TRUE,
+          choices = c(1, 2, 3, 4)
+        )
+      ),
+      
+      mainPanel(
+        dataTableOutput("table")
+      )
+    )
   ),
 )
 
@@ -84,6 +98,10 @@ server<-function(input,output){
       geom_smooth(method = lm)
   })
   
+  # table
+  output$table <- renderDataTable({
+    filter(dat, region %in% input$region)
+  })
   
 } 
 
