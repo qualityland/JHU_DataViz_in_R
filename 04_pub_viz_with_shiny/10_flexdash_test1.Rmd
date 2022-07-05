@@ -1,0 +1,47 @@
+---
+title: "Flexdashboard Demonstration"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(tidyverse)
+data(mtcars)
+```
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Chart A
+
+```{r}
+ggplot(mtcars, aes(wt, mpg)) +
+  geom_point() +
+  labs(title = "Cars Fuel Efficiency vs. Weight",
+       x = "Weight", y = "Miles per Gallon")
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Chart B
+
+```{r}
+ggplot(mtcars, aes(cyl)) +
+  geom_bar() +
+  labs(title = "Distribution of Number of Cylinders",
+       x = "Number of Cylinders")
+```
+
+### Chart C
+
+```{r}
+ggplot(mtcars) +
+  geom_boxplot(aes(y = hp)) +
+  labs(title = "Distribution of Horsepower",
+       y = "Horsepower")
+```
+
