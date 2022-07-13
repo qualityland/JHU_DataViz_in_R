@@ -31,6 +31,8 @@ Column
 
 ```{r}
 renderPlotly(
-    ggplotly(ggplot(filter(mtcars,cyl==input$my_cyl),aes(x=mpg,y=wt))+geom_point())
+  ggplotly(
+    ggplot(filter(mtcars, cyl == input$my_cyl), aes(x = mpg, y = wt)) +
+      geom_point())
 )
 ```
