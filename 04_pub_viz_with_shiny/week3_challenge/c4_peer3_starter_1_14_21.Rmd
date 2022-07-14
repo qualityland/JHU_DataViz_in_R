@@ -18,9 +18,11 @@ dat<-read_csv(url("https://www.dropbox.com/s/4ebgnkdhhxo5rac/cel_volden_wiseman%
 dat$Party<-recode(dat$dem,`1`="Democrat",`0`="Republican")
 
 
-#######HINT: for Chart D, you'll need to set the height of the renderPlot, using the height argument. Try a value of 750.
+# HINT: for Chart D, you'll need to set the height of the renderPlot, using the
+#       height argument. Try a value of 750.
 
-#####some data management functions are already included. You need to add the visualization functions.
+# some data management functions are already included. You need to add the
+# visualization functions.
 
 ```
 
@@ -34,9 +36,9 @@ Page 1
 ```{r}
 dat %>% 
   drop_na() %>% 
-  filter(year>1979) %>% 
-  group_by(year,Party) %>% 
-  summarise(passed=sum(all_pass)) %>% 
+  filter(year > 1979) %>% 
+  group_by(year, Party) %>% 
+  summarise(passed = sum(all_pass)) %>% 
 
 
 ```
@@ -46,9 +48,9 @@ dat %>%
 
 ```{r}
 
-dat%>%
-  drop_na()%>%
-  filter(congress==110) %>%
+dat %>%
+  drop_na() %>%
+  filter(congress == 110) %>%
   ggplot
 ```
 
@@ -57,9 +59,9 @@ dat%>%
 ### Chart C
 
 ```{r}
-dat%>%
-  drop_na()%>%
-  filter(congress==110) %>%
+dat %>%
+  drop_na() %>%
+  filter(congress == 110) %>%
   ggplot(
 ```
 
@@ -68,13 +70,14 @@ dat%>%
 
 ```{r}
 
-####hint: this figure uses selectInput with the multiple option set to true and with the options set up so that all states are initially selected.
+# hint: this figure uses selectInput with the multiple option set to true and
+#       with the options set up so that all states are initially selected.
 
 
 dat %>% 
   group_by(st_name) %>% 
-  filter(congress==110) %>%
-  summarise(passed=sum(all_pass))
+  filter(congress == 110) %>%
+  summarise(passed = sum(all_pass))
 
 ```
 
