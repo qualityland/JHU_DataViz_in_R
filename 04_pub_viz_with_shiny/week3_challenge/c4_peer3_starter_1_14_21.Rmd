@@ -56,11 +56,18 @@ Column
 ### Chart B
 
 ```{r}
-
-dat %>%
+ggplotly(
+  dat %>%
   drop_na() %>%
   filter(congress == 110) %>%
-  ggplot
+    ggplot(aes(x = votepct, y = all_pass, color = Party)) +
+    geom_point() +
+    geom_smooth(method = lm) +
+    labs(title="Passage and Vote Pct., 110th Congress",
+         x="Vote Pct.",
+         y="All Pass") +
+    scale_color_manual(values=c("blue","red"))
+)
 ```
 
 Column
@@ -69,10 +76,18 @@ Column
 ### Chart C
 
 ```{r}
-dat %>%
+ggplotly(
+  dat %>%
   drop_na() %>%
   filter(congress == 110) %>%
-  ggplot()
+  ggplot(aes(x = dwnom1, y = all_pass, color = Party)) +
+  geom_point() +
+  geom_smooth(method = lm) +
+  labs(title="Passage and Ideology, 110th Congress",
+       x="DW Nominate",
+       y="All Pass") +
+    scale_color_manual(values=c("blue","red"))
+)
 ```
 
 Page 3
@@ -84,23 +99,35 @@ Input{.sidebar}
 ### Chart D
 
 ```{r}
-radioButtons(inputId="my_cyl",label="Cylinders",choices=c(4,6,8))
-```
-
-Column
-----------------------------------------------------------------
-
-
-```{r}
 
 # hint: this figure uses selectInput with the multiple option set to true and
 #       with the options set up so that all states are initially selected.
 
 
+states <- dat$st_name %>% 
+  unique() %>% 
+  sort()
+
+selectInput(inputId="states",
+            label="State",
+            choices=states,
+            selected = states,
+            multiple = TRUE)
+```
+
+
+Column{data-height=750}
+----------------------------------------------------------------
+### Total Bills Passed by State, 110th Congress
+
+```{r}
 dat %>% 
   group_by(st_name) %>% 
   filter(congress == 110) %>%
-  summarise(passed = sum(all_pass))
+  summarise(passed = sum(all_pass)) %>% 
+  ggplot(aes(x=passed, y=st_name)) +
+  geom_col() +
+  labs(x="Total Bills Passed per State", y="State Name")
 
 ```
 
