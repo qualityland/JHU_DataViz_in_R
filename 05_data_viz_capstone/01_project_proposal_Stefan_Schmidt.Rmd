@@ -10,18 +10,19 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Project Topic
 
-Identify the subject of your project. What are you going to be making your
-visualizations about?
+The topic of my project will be the *Mortality Fluctuation 2015 - 2022*.
 
-Some examples of possible topics:
+I plan to compare COVID with non-COVID years and also different countries with
+each other.
 
-* Educational achievement in a country/province/city
-* Sports - player statistics and performance of a team
-* Political survey data like what we've used in previous courses in this
-  specialization
-* Business data - prices, company performance, budget data, productivity data
+As you may know mortality changes during the year, with usually higher rates in
+winter. During the COVID-19 pandemic there were groups that tried to downplay
+the impact of the virus and some even claimed the influenza epidemic 2017 (in
+Europe) had a higher mortality.
 
-Please indicate in as much detail as possible what the topic is going to be.
+Hopefully I can visualize mortality changes over year and provide some figures
+that allow to compare different years and/or countries.
+
 
 ## Data Sources
 
@@ -31,11 +32,13 @@ they collected?
 
 The project will be based on the following data:
 
-* [Short-Term Mortality Fluctuations](https://www.mortality.org/Data/STMF)
-  provided by the
-  [Human Mortality Database (HMD)](https://www.mortality.org).
-* Three letter ISO country codes provided by Tadas Tamošauskas available on
-  [GitHub](https://gist.github.com/tadast/8827699).
+* [Short-Term Mortality Fluctuations (STMF)](https://www.mortality.org/Data/STMF)
+  data set available at [www.mortality.org](https://www.mortality.org). STMF is
+  an international database providing open-access harmonized, uniform, and fully
+  documented data on weekly all-cause mortality.
+* Country names and three letter country codes (alpha-3) provided by Luke
+  Duncalfe available on
+  [GitHub](https://github.com/lukes/ISO-3166-Countries-with-Regional-Codes).
 
 
 ## Description of the Data
