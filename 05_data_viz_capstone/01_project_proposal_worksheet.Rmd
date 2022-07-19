@@ -13,6 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 Identify the subject of your project. What are you going to be making your visualizations about?
 
 Some examples of possible topics:
+
 * Educational achievement in a country/province/city
 * Sports - player statistics and performance of a team
 * Political survey data like what we've used in previous courses in this specialization

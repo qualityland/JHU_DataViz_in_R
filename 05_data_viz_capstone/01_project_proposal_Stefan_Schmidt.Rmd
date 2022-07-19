@@ -16,12 +16,9 @@ visualizations about?
 Some examples of possible topics:
 
 * Educational achievement in a country/province/city
-
 * Sports - player statistics and performance of a team
-
 * Political survey data like what we've used in previous courses in this
   specialization
-  
 * Business data - prices, company performance, budget data, productivity data
 
 Please indicate in as much detail as possible what the topic is going to be.
@@ -37,7 +34,6 @@ The project will be based on the following data:
 * [Short-Term Mortality Fluctuations](https://www.mortality.org/Data/STMF)
   provided by the
   [Human Mortality Database (HMD)](https://www.mortality.org).
-  
 * Three letter ISO country codes provided by Tadas Tamošauskas available on
   [GitHub](https://gist.github.com/tadast/8827699).
 

@@ -1,0 +1,53 @@
+---
+title: "Project Proposal Review Criteria"
+author: "Stefan Schmidt"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Instructions
+
+The project proposal exists so students can research and choose a topic for the
+final capstone project. You will be required to create eight figures of three
+different types.
+
+You should select a topic of personal or professional interest to you that will
+be the subject of a series of data-driven visualizations. 
+
+Researching and carefully selecting a topic early is critical to ensure that
+there is enough data available to create a diverse range of graphics. You should
+take time to ensure that the data sources used come from reputable organizations
+like national governments, non-profit think tanks, academic institutions, and
+unbiased media sources.
+
+The most common problem that learners encounter is data shortage, so take time
+to ensure there is enough. Also, you do not want to work on a project that
+requires data collection or waiting to obtain proprietary data. Use openly
+available data.
+
+Your proposal must include the following information:
+
+1. The topic that will be examined
+2. The data sources that you will use
+3. Description of the data
+4. Series of preliminary ideas about what types of graphs the project may
+   include and what those graphs could feasibly show
+
+Additional details are provided in the worksheet.
+
+
+## Review criteria
+
+A classmate will assess whether your project is viable.
+
+Be sure you have a clear topic, a link to your data, a description of the data
+source, and at least three proposed visualizations.
+
+
+## Step-By-Step Assignment Instructions
+
+Please use the included R Markdown worksheet to create your project proposal. 
