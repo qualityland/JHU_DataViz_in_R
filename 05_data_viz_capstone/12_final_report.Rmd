@@ -1,0 +1,52 @@
+---
+title: "Final Report Criteria"
+author: "Stefan Schmidt"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+The final project is the culmination of everything you have learned in this
+specialization. Students will create an R Markdown file that includes a series
+of compelling visualizations.
+
+The final project should contain eight polished and complete data-driven
+graphics based on the topic chosen by the learner in the portfolio. There should
+be at least three different types of figure. At least one figure should be
+either animated or interactive, using gganimate, shiny, or plotly.
+
+The primary emphasis is on the quality of the individual graphics. The most
+important features of a final published graphic are its clarity in delivering a
+rich amount of information. 
+
+Make sure that your graphics:
+
+1. Include a title that describes the figure
+
+2. Have appropriate and clear axis labels and legends
+
+3. Include a variety of figure types. Use at least 3 figure types (e.g., some
+   combination of box plots, line plots, bar charts, heatmaps, spatial figures,
+   dumbbell charts, etc.).
+
+## Review criteria
+
+less 
+A classmate will review your project to ensure that you have generated eight
+visualizations of at least three types.
+
+## Step-By-Step Assignment Instructions
+
+less 
+For this project, use the data that you identified in Week 1 of the course.
+Use all of the skills you have acquired throughout this specialization to make
+a variety of visualizations. You need eight visualizations, and one should be
+either animated or interactive. There must be three different figure types. 
+
+Once you are done with your report, upload to either RPubs or your shinyapps.io
+account. You will share a link to your report or dashboard as your submission
+for this assignment.
+
