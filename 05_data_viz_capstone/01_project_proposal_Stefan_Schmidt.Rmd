@@ -26,9 +26,6 @@ that allow to compare different years and/or countries.
 
 ## Data Sources
 
-Please identify the source(s) of data you will use for your project. Provide
-links to websites and citations for the data. Who created these data? How were
-they collected?
 
 The project will be based on the following data:
 

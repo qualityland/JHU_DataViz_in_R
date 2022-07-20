@@ -11,10 +11,11 @@ names(countries) <- c("Country", "CountryCode")
 
 # check if we have country name for all our country codes
 mort_codes <- sort(unique(mort$CountryCode))
-all(mort_codes %in% countries$CountryCode)
+country_codes <- sort(unique(countries$CountryCode))
+all(mort_codes %in% country_codes)
 
 # which country names are missing?
-mort_codes[!(mort_codes %in% country$alpha_3)]
+mort_codes[!(mort_codes %in% country_codes)]
 # missing are:
 # "DEUTNP"  "FRATNP"  "GBR_NIR" "GBR_SCO" "GBRTENW" "NZL_NP"
 # which are:
