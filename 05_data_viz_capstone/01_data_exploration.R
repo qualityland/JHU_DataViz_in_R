@@ -30,13 +30,29 @@ missing_countries <-
 
 # add column: Country
 mort <- mort %>% 
-  dplyr::left_join(rbind(countries, missing_countries), by = "CountryCode")
+  dplyr::left_join(rbind(countries, missing_countries), by = "CountryCode") %>% 
+  relocate("Country")
 
 # any NAs?
 summary(mort)
 
 # show
 mort %>% 
-  select(c(Country, CountryCode)) %>% 
+  select(c(1, 2)) %>% 
   distinct()
 
+readr::write_csv(mort, "05_data_viz_capstone/data/mortality.csv")
+
+df <- read_csv("05_data_viz_capstone/data/mortality.csv")
+write_rds(df, "05_data_viz_capstone/data/mortality.rds", compress = "xz")
+df2 <- read_rds("05_data_viz_capstone/data/mortality.rds")
+identical(df, df2)
+
+# explore some years
+df %>% 
+  select(Country, Year, Week, Sex, DTotal) %>% 
+  filter(Country == "Switzerland", Year %in% c(2020, 2022), Sex == "b") %>% 
+  mutate(Year = factor(Year)) %>% 
+  group_by(Year) %>% 
+  ggplot(aes(x = Week, y = DTotal, color=Year)) +
+  geom_line()

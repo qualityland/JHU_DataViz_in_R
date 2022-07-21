@@ -12,13 +12,12 @@ knitr::opts_chunk$set(echo = TRUE)
 
 The topic of my project will be the *Mortality Fluctuation 2015 - 2022*.
 
-I plan to compare COVID with non-COVID years and also different countries with
+I plan to compare COVID-19 with non-COVID years and also different countries with
 each other.
 
-As you may know mortality changes during the year, with usually higher rates in
-winter. During the COVID-19 pandemic there were groups that tried to downplay
-the impact of the virus and some even claimed the influenza epidemic 2017 (in
-Europe) had a higher mortality.
+Mortality changes during the year, with usually higher rates in winter. During
+the pandemic, certain groups claimed the impact of the SARS-CoV-2 virus was no
+greater than that, of the 2017 influenza epidemic in Europe.
 
 Hopefully I can visualize mortality changes over year and provide some figures
 that allow to compare different years and/or countries.
