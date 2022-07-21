@@ -26,8 +26,7 @@ missing_countries <-
     Country = c("Germany", "France", "Northern Ireland", 
                 "Scottland", "Wales & England", "New Zealand"),
     CountryCode = c("DEUTNP", "FRATNP", "GBR_NIR",
-                    "GBR_SCO", "GBRTENW", "NZL_NP")
-  )
+                    "GBR_SCO", "GBRTENW", "NZL_NP"))
 
 # add column: Country
 mort <- mort %>% 
