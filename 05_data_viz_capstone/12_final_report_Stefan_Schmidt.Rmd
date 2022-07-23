@@ -1,52 +1,106 @@
 ---
-title: "Final Report Criteria"
+title: "Final Report"
 author: "Stefan Schmidt"
 date: "`r Sys.Date()`"
-output: html_document
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+runtime: shiny
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+library(flexdashboard)
+library(tidyverse)
+library(plotly)
+library(shiny)
+
+stmf <- 
+  "https://raw.githubusercontent.com/qualityland/JHU_DataViz_in_R/main/05_data_viz_capstone/data/stmf.csv"
+df <- read_csv(url(stmf), skip = 2)
 ```
 
-The final project is the culmination of everything you have learned in this
-specialization. Students will create an R Markdown file that includes a series
-of compelling visualizations.
 
-The final project should contain eight polished and complete data-driven
-graphics based on the topic chosen by the learner in the portfolio. There should
-be at least three different types of figure. At least one figure should be
-either animated or interactive, using gganimate, shiny, or plotly.
 
-The primary emphasis is on the quality of the individual graphics. The most
-important features of a final published graphic are its clarity in delivering a
-rich amount of information. 
+Page 1 {data-orientation=columns}
+===================================== 
 
-Make sure that your graphics:
+Column
+-------    
 
-1. Include a title that describes the figure
+### Chart B
 
-2. Have appropriate and clear axis labels and legends
+```{r}
 
-3. Include a variety of figure types. Use at least 3 figure types (e.g., some
-   combination of box plots, line plots, bar charts, heatmaps, spatial figures,
-   dumbbell charts, etc.).
+```
 
-## Review criteria
+Column
+-------    
 
-less 
-A classmate will review your project to ensure that you have generated eight
-visualizations of at least three types.
+### Chart C
 
-## Step-By-Step Assignment Instructions
+```{r}
+```
 
-less 
-For this project, use the data that you identified in Week 1 of the course.
-Use all of the skills you have acquired throughout this specialization to make
-a variety of visualizations. You need eight visualizations, and one should be
-either animated or interactive. There must be three different figure types. 
 
-Once you are done with your report, upload to either RPubs or your shinyapps.io
-account. You will share a link to your report or dashboard as your submission
-for this assignment.
+
+
+Page 2
+======
+
+### Per Year
+
+
+```{r}
+df %>% 
+  filter(Year > 2018, Sex == "b", CountryCode == "CHE") %>% 
+  mutate(Year = factor(Year)) %>% 
+  group_by(Year, CountryCode) %>% 
+  ggplot(aes(x = Week, y = DTotal, color = Year)) +
+  geom_line() +
+  labs(
+    title="Mortality in Switzerland",
+    x="Week of the Year",
+    y="Number of Deaths")
+```
+
+Page 2 {data-orientation=columns}
+===================================== 
+
+Column
+-------    
+
+### Chart B
+
+```{r}
+
+```
+
+Column
+-------    
+
+### Chart C
+
+```{r}
+```
+
+Page 3
+======
+
+Input{.sidebar}
+----------------------------------------------------------------
+
+### Chart D
+
+```{r}
+
+```
+
+
+Column{data-height=750}
+----------------------------------------------------------------
+### Total Bills Passed by State, 110th Congress
+
+```{r}
+```
 

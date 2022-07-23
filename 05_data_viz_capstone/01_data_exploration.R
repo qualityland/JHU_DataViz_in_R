@@ -56,3 +56,7 @@ df %>%
   group_by(Year) %>% 
   ggplot(aes(x = Week, y = DTotal, color=Year)) +
   geom_line()
+
+# DOES NOT WORK!!!
+u <- "https://github.com/qualityland/JHU_DataViz_in_R/blob/main/05_data_viz_capstone/data/mortality.rds"
+mortality <- read_rds(url(u, method = "libcurl"))
