@@ -48,7 +48,7 @@ Column
 Page 2
 ======
 
-### Per Year
+### Switzerland
 
 
 ```{r}
@@ -64,25 +64,6 @@ df %>%
     y="Number of Deaths")
 ```
 
-Page 2 {data-orientation=columns}
-===================================== 
-
-Column
--------    
-
-### Chart B
-
-```{r}
-
-```
-
-Column
--------    
-
-### Chart C
-
-```{r}
-```
 
 Page 3
 ======

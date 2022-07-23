@@ -33,13 +33,15 @@ mort <- mort %>%
   dplyr::left_join(rbind(countries, missing_countries), by = "CountryCode") %>% 
   relocate("Country")
 
-# any NAs?
-summary(mort)
+# 
+mort <- mort %>% 
+  filter(Sex == "b") %>% 
+  select(Country,
+         CountryCode,
+         Year,
+         Week,
+         D0_14, D15_64, D65_74, D75_84, D85p, DTotal)
 
-# show
-mort %>% 
-  select(c(1, 2)) %>% 
-  distinct()
 
 readr::write_csv(mort, "05_data_viz_capstone/data/mortality.csv")
 
