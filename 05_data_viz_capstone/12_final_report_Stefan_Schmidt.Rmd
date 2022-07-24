@@ -15,9 +15,9 @@ library(tidyverse)
 library(plotly)
 library(shiny)
 
-stmf <- 
-  "https://raw.githubusercontent.com/qualityland/JHU_DataViz_in_R/main/05_data_viz_capstone/data/stmf.csv"
-df <- read_csv(url(stmf), skip = 2)
+mort <- 
+"https://raw.githubusercontent.com/qualityland/JHU_DataViz_in_R/main/05_data_viz_capstone/data/mortality.csv"
+df <- read_csv(url(mort))
 ```
 
 
@@ -53,7 +53,7 @@ Page 2
 
 ```{r}
 df %>% 
-  filter(Year > 2018, Sex == "b", CountryCode == "CHE") %>% 
+  filter(Year > 2018, CountryCode == "CHE") %>% 
   mutate(Year = factor(Year)) %>% 
   group_by(Year, CountryCode) %>% 
   ggplot(aes(x = Week, y = DTotal, color = Year)) +
