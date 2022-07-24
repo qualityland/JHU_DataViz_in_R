@@ -31,10 +31,11 @@ The project will be based on the following data:
 * [Short-Term Mortality Fluctuations (STMF)](https://www.mortality.org/Data/STMF)
   data set available at [www.mortality.org](https://www.mortality.org). STMF is
   an international database providing open-access harmonized, uniform, and fully
-  documented data on weekly all-cause mortality.
+  documented data on weekly all-cause mortality. Downloaded on 23-Jul-2022.
 * Country names and three letter country codes (alpha-3) provided by Luke
   Duncalfe available on
   [GitHub](https://github.com/lukes/ISO-3166-Countries-with-Regional-Codes).
+   Downloaded on 23-Jul-2022.
 
 
 ## Description of the Data
