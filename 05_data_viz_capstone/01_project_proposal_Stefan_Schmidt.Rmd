@@ -8,6 +8,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+
 ## Project Topic
 
 The topic of my project will be the *Mortality Fluctuation 2015 - 2022*.
@@ -20,11 +21,10 @@ the pandemic, certain groups claimed the impact of the SARS-CoV-2 virus was no
 greater than that, of the 2017 influenza epidemic in Europe.
 
 Hopefully I can visualize mortality changes over year and provide some figures
-that allow to compare different years and/or countries.
+that allow to compare different years or countries.
 
 
 ## Data Sources
-
 
 The project will be based on the following data:
 
@@ -32,42 +32,38 @@ The project will be based on the following data:
   data set available at [www.mortality.org](https://www.mortality.org). STMF is
   an international database providing open-access harmonized, uniform, and fully
   documented data on weekly all-cause mortality. Downloaded on 23-Jul-2022.
-* Country names and three letter country codes (alpha-3) provided by Luke
-  Duncalfe available on
-  [GitHub](https://github.com/lukes/ISO-3166-Countries-with-Regional-Codes).
-   Downloaded on 23-Jul-2022.
 
 
 ## Description of the Data
 
-Please provide specific details about your data.
- 
-* If the data covers a timespan, what is the time period?
-* If the data covers a geographical location, what geographical location(s)?
-* If the data is about a business, political, or non-governmental entity or
-  activity, which entities or activities does it cover? For example is the data
-  about economics, schools, politics, sports, or something else?
-* What characteristics are captured by the data? For example, if your data is
-  about cities, what characteristics of the cities are captured in the data?
-  Population, crime rates, economic measures, business activity, traffic?
-* Assuming your data is rectangular (like a spreadsheet), how many rows and
-  columns are in the dataset? If your data is not rectangular, how are you going
-  to create a "tidy" dataset from these data?
+Heare are some specifics about the STMF data:
+
+* WHAT: weekly mortality numbers (deaths per week).
+* WHO: reported by 38 different countries (mostly european, but also some non-european).
+* WHEN: time span between 2015 to midth of 2022 (for some countries there is
+  even data available since 2000; few did only report numbers until end of 2020).
+* SIZE: the original dataset has 113,481 rows and 19 columns.
+* The data also differentiates:
+  * age groups (< 14y, 15-65y, 65-85y, >85y)
+  * sex (male, female, both)
+  * absolute from relative numbers (relative to population)
 
 
-## Ideas about the figures that you will create to visualize this data:
+## Ideas about the figures to visualize STMF data:
 
-Please provide ideas for the figures you are going to generate from these data.
-Are you going to make line plots, bar charts, density plot, dumbbell charts,
-choropleths, or what? You should provide a description of at least three
-figures. Your final project will include eight figures.
+The following visualizations are planned:
 
+* line graphs of weekly mortality
+  * for different countries
+  * for different years
+* bar charts of mortality
+  * for different age group
+* box plots of mortality
+  * for different age groups
+  
+I also plan to put line graphs side-by-side for easy comparison of:
 
+* one country's mortality with another one's
+* one year's mortality with another's (e.g. pandemic with pre-pandemic) 
 
-## References 
-
-HMD. Human Mortality Database. Max Planck Institute for Demographic Research
-(Germany), University of California, Berkeley (USA), and French Institute for
-Demographic Studies (France). Available at
-[www.mortality.org](https://www.mortality.org) (data downloaded on 19-Jul-2022).
 
