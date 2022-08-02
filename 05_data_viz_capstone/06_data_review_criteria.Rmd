@@ -1,0 +1,22 @@
+---
+title: "Data Review Criteria"
+output: html_document
+date: "2022-08-02"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Before making your visualizations, you must prepare the data for the visualization. This is often the most difficult part. For this assignment, you must use your data and prepare the data for at least three visualizations.
+
+You must prepare the exact data that you will use for the visualization. This means creating a data set that includes the data and only the data that you are going to transform into a graphic. This will require cleaning and filtering your data and creating three small subsets. An example is provided in the included R Markdown worksheet.
+
+You may want to come back and complete this assignment after watching the videos for this week, but it is posted here at the start of the week so you are aware of the assignment requirements.
+
+
+A classmate will review your completed R Markdown worksheet and ensure that you have successfully isolated and prepared the data for at least three visualizations. Make sure you propose a visualization and prepare the data for three different figures.
+
+Step-By-Step Assignment Instructions
+
+Download and complete the attached worksheet. Knit the R Markdown file as an HTML document. This is what you will upload for peer review. 
