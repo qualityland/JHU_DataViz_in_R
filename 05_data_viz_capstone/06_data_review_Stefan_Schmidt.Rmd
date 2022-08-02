@@ -1,13 +1,13 @@
 ---
 title: "Data Review"
-author: "YOUR NAME HERE"
-date: "11/10/2020"
+author: "Stefan Schmidt"
+date: "08/02/2022"
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
 
-#####Make sure you load any required packages.
+# Make sure you load any required packages.
 
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
@@ -19,57 +19,80 @@ In the following code hunk, import your data.
 
 ```{r data_import}
 
-#### Use read_csv() or another function
+# Use read_csv() or another function
+mort <- 
+"https://raw.githubusercontent.com/qualityland/JHU_DataViz_in_R/main/05_data_viz_capstone/data/mortality.csv"
+dat <- read_csv(url(mort))
 
-#### Make sure your data is converted into a tibble. 
-
-#### For demonstration purposes, this example uses the mtcars data.
-
-data(mtcars)
-
-dat<-tibble(mtcars)
-
-
+# Make sure your data is converted into a tibble. 
+#class(dat)
+is_tibble(dat)
 ```
 
 ## Part 1
 
-Using words, describe the visualization you are going to make using which variables/characteristics in your data:
+Using words, describe the visualization you are going to make using which
+variables/characteristics in your data:
 
-*Example*: For my first figure, I am going to create a scatterplot that plots vehicle weight on the x axis and miles per gallon the y axis. I will create a two column tibble with these data.
+For my first figure, I am going to create a lineplot that plots
+*week of the year* on the x axis and *mortality (deaths per week)* on the
+y axis. I will create a five column tibble with these data.
 
-In the code chunk below, show your work filtering the data and create the subset of data you will display graphically.
+In the code chunk below, show your work filtering the data and create the
+subset of data you will display graphically.
 
 ```{r data_1}
-fig_dat1<-dat %>% select(wt,mpg)
-####make sure you call the data so it will display in your report
+fig_dat1 <- dat %>% 
+  select(Country, CountryCode, Year, Week, DTotal)
+
+# make sure you call the data so it will display in your report
 fig_dat1
 ```
 
 ## Part 2
 
-Using words, describe the *second* visualization you are going to make using which variables/characteristics in your data:
+Using words, describe the *second* visualization you are going to make using
+which variables/characteristics in your data:
 
-*Example*: For my second figure, I am going to create a boxplot that includes three boxplots for miles per gallon, horsepower, and weight.
+For my second figure, I am going to create a boxplot that includes five
+boxplots for *mortality per week*, one for each *age group* (0-14y, 15-64y,
+65-84y, >=85y). Therefore the data has to be put in *long* format.
 
-In the code chunk below, show your work filtering the data and create the subset of data you will display graphically.
+In the code chunk below, show your work filtering the data and create the subset
+of data you will display graphically.
 
 ```{r data_2}
-fig_dat2<-dat %>% select(mpg,hp,wt)
-####make sure you call the data so it will display in your report
+fig_dat2 <- dat %>% 
+  select(Country, CountryCode, Year, Week, D0_14, D15_64, D65_74, D75_84,  D85p) %>% 
+  pivot_longer(
+    cols = starts_with("D"),
+    names_to = "Age",
+    names_prefix = "D",
+    values_to = "Deaths")
+
+# make sure you call the data so it will display in your report
 fig_dat2
 ```
 
 
 ## Part 3
 
-Using words, describe the *third* visualization you are going to make using which variables/characteristics in your data:
+Using words, describe the *third* visualization you are going to make using
+which variables/characteristics in your data:
 
-*Example*: For the third figure, I will display a density plot of the quarter mile time for six cylinder cars.
+For the third figure, I will display a bar plot of the *deaths per year* for
+every *age group* (0-14y, 15-64y, 65-84y, >=85y).
 
 ```{r data_3}
-fig_dat3<-dat %>% filter(cyl==6) %>% select(qsec) 
-####make sure you call the data so it will display in your report
+fig_dat3 <- dat %>% 
+  select(Country, CountryCode, Year, Week, D0_14, D15_64, D65_74, D75_84,  D85p) %>% 
+  pivot_longer(
+    cols = starts_with("D"),
+    names_to = "Age",
+    names_prefix = "D",
+    values_to = "Deaths")
+
+# make sure you call the data so it will display in your report
 fig_dat3
 ```
 
