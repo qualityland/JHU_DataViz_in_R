@@ -1,6 +1,6 @@
 ---
 title: "Visualization Critique"
-author: "YOUR NAME HERE"
+author: "Stefan Schmidt"
 output: html_document
 ---
 
@@ -12,13 +12,40 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Please provide a link to your visualization critique.
 
-<http://www.example.com>[www.example.com]
+<https://tidytuesday.netlify.app/posts/2022-07-21-technology-adoption/#plotting-distributions-of-electricity-produced-from-fossil-fuels-and-low-carbon-sources>
 
 ## Weakness
 
-What do you see as a significant weakness of this visualization? How could you improve it to make it clearer, easier to understand, or more impactful? Make sure you provide some detail in justifying your answer.
+What do you see as a significant weakness of this visualization? How could you
+improve it to make it clearer, easier to understand, or more impactful? Make
+sure you provide some detail in justifying your answer.
+
+* Most significant weakness is the **use of a logarithmic scale for the y-axis**
+  and that the **scale even differs between continents**. This leads to the
+  impression that e.g. *Electricity generated from fossil fuels by continent* is
+  similar for all continents. Only a closer look reveals that differs, in some
+  cases by factor 10 or even more.
+* The **usage of scientific notation** (1e3 for 1000) for numbers on the y-axis
+  makes figures more difficult to understand for non-scientific audience.
+* Continents are composed of countries that can be very different. The **option
+  to dig deeper on e.g. country level would provide deeper insights**. Not
+  being familiar with the underlying data, I suspect the data set is not
+  sufficiently fine-grained.
+* If country-level data would be available, another option would have been to
+  make the **visualisation interactive** and let the end user choose continents
+  or countries for side-by-side comparison.
+  
+I understand the focus of the whole article is not visualization, but the usage
+of an R package and some data subsetting methods. Perhaps data visualization was
+just a sideshow in this article.
+
+
 
 ## Strength
 
 What do you see as a strength of this visualization? Is there a specific choice of the designer that made it especially useful or impactful? Make sure you provide some detail in justifying your answer.
 
+* One strength is the **consistent usage of color** for different fossil fuel sources.
+* All **figures have titles** and all **axes are labeled**. **Units of measurement** are
+  present.
+* The **use of a theme** makes the figures more interesting.

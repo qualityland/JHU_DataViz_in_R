@@ -1,0 +1,24 @@
+---
+title: "Visualization Critique"
+output: html_document
+date: "2022-08-02"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Critical analysis of visualization design is an important skill that will aid you as you create your own visualizations. 
+
+Your critique should analyze a single, recently published visualization. These can be drawn from publications like the journalistic outlets (e.g., New York Times, the Washington Post) or websites for businesses, government, or non-governmental organizations. There are also a number of aggregators like FlowingData or Reddit (e.g. r/DataIsBeautiful) that are great sources for visualizations.
+
+To complete this assignment, you will **provide a link** to the visualization you are critiquing, as well as the completed worksheet for critiquing the visualization
+
+
+A good analysis will be **more than what you like or dislike** about the design.
+
+* Try to get inside the head of the designer and **understand what tradeoffs they’ve made and why**.
+* Consider **how the visualization is positioned as part of the broader story or article**, if applicable.
+* If there’s a choice that limits legibility or precision, **why might they have made that choice**?
+* How did they solve particular problems they may have encountered about the data they were visualizing?
+* What **alternative approaches** might they have tried, and how would those have strengthened or weakened the design?
