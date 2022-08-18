@@ -1,6 +1,6 @@
 library(tidyverse)
 
-mort <- read_csv("05_data_viz_capstone/data/stmf.csv", skip = 2)
+mort <- read_csv("05_data_viz_capstone/data/stmf_2022-08-11.csv", skip = 2)
 
 #countries <- read_csv("05_data_viz_capstone/data/countries_codes_and_coordinates.csv")
 countries <- 
@@ -33,17 +33,31 @@ mort <- mort %>%
   dplyr::left_join(rbind(countries, missing_countries), by = "CountryCode") %>% 
   relocate("Country")
 
-# 
+# minimum year that all countries have in common: 2016
+mort %>% 
+  group_by(Country) %>% 
+  summarize(MinYear = min(Year),
+            MaxYear = max(Year)) %>% 
+  arrange(desc(MinYear)) %>% 
+  as.data.frame()
+
+
+# only filter: Year since 2016
 mort <- mort %>% 
-  filter(Sex == "b") %>% 
-  select(Country,
-         CountryCode,
-         Year,
-         Week,
-         D0_14, D15_64, D65_74, D75_84, D85p, DTotal)
+  filter(Year > 2015)
 
 
-readr::write_csv(mort, "05_data_viz_capstone/data/mortality.csv")
+# 
+# mort <- mort %>% 
+#   filter(Sex == "b") %>% 
+#   select(Country,
+#          CountryCode,
+#          Year,
+#          Week,
+#          D0_14, D15_64, D65_74, D75_84, D85p, DTotal)
+
+
+readr::write_csv(mort, "05_data_viz_capstone/data/mortality_2022-08-11.csv")
 
 df <- read_csv("05_data_viz_capstone/data/mortality.csv")
 write_rds(df, "05_data_viz_capstone/data/mortality.rds", compress = "xz")
