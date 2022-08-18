@@ -42,9 +42,9 @@ mort %>%
   as.data.frame()
 
 
-# only filter: Year since 2016
+# only filter: both sexes
 mort <- mort %>% 
-  filter(Year > 2015)
+  filter(Sex == "b")
 
 
 # 
