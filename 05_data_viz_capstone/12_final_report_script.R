@@ -1,25 +1,82 @@
 library(flexdashboard)
 library(tidyverse)
+library(lubridate)
 library(plotly)
 library(shiny)
 library(ISOweek)
 
-mort <- 
-  "https://raw.githubusercontent.com/qualityland/JHU_DataViz_in_R/main/05_data_viz_capstone/data/mortality.csv"
-df <- read_csv(url(mort))
-df
+mort <-
+  "https://raw.githubusercontent.com/qualityland/JHU_DataViz_in_R/main/05_data_viz_capstone/data/mortality_2022-08-11.csv"
+df_mort <- read_csv(url(mort))
+
+# most current STMF data
+# stmf <- 
+#   read_csv(
+#     "https://mortality.org/File/GetDocument/Public/STMF/Outputs/stmf.csv",
+#     skip = 2
+#   )
+
+df_mort
+
+# df %>% 
+#   group_by(Country) %>% 
+#   summarize(MinYear = min(Year),
+#             MaxYear = max(Year)) %>% 
+#   arrange(desc(MinYear)) %>% 
+#   as.data.frame()
+
+# Crude Death Rate for several Countries
+# https://en.wikipedia.org/wiki/Mortality_rate#Crude_death_rate,_globally
+df_mort %>% 
+  filter(Country %in% c("Germany", "Switzerland", "Italy",
+                        "France", "United States of America")) %>% 
+  mutate(
+    # Country = recode(Country,
+    #                  `Wales & England` = "England & Wales",
+    #                  `Korea, Republic of` = "Korea",
+    #                  `Taiwan, Province of China` = "Taiwan",
+    #                  `United States of America` = "USA"),
+    population = DTotal / RTotal,
+    Year = ymd(Year, truncated = 2)) %>% 
+  group_by(Year, Country) %>% 
+  summarise(CDR = sum(DTotal) / sum(population), .groups = "drop") %>% 
+  ggplot(aes(x = Year, y = CDR, color = Country)) +
+  geom_line(size = 1) +
+  ylab("Crude Death Rate")
+
+
+
+
 
 # Line Graphs, Switzerland, 2019 - 2022
-df %>% 
-  filter(Year > 2018, CountryCode == "CHE") %>% 
+df_mort %>% 
+  filter(Year > 2018, Country == "Switzerland") %>% 
   mutate(Year = factor(Year)) %>% 
-  group_by(Year, CountryCode) %>% 
-  ggplot(aes(x = Week, y = DTotal, color = Year)) +
+  group_by(Year, Country) %>% 
+  ggplot(aes(x = Week, y = RTotal, color = Year)) +
   geom_line() +
   labs(
-    title="Mortality in Switzerland",
+    title="relative Mortality in Switzerland",
     x="Week of the Year",
-    y="Number of Deaths")
+    y="Death Rate")
+
+
+
+df %>% 
+  filter(
+    Country %in% c("France", "Germany", "Switzerland", "Wales & England",
+                   "Sweden", "United States of America"),
+    Sex == "b",
+    Year == 2022) %>% 
+  mutate(Year = factor(Year)) %>% 
+  group_by(Year, Country) %>% 
+  ggplot(aes(x = Week, y = RTotal, color = Country)) +
+  geom_line() +
+  labs(
+    title="relative Mortality for different Countries",
+    x="Week of the Year",
+    y="Deathrate")
+
 
 
 # Bar Plots, Switzerland
