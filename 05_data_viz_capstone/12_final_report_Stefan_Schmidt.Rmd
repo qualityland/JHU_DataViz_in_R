@@ -12,14 +12,60 @@ runtime: shiny
 ```{r setup, include=FALSE}
 library(flexdashboard)
 library(tidyverse)
-library(plotly)
+library(lubridate)
+#library(plotly)
 library(shiny)
 
 mort <- 
 "https://raw.githubusercontent.com/qualityland/JHU_DataViz_in_R/main/05_data_viz_capstone/data/mortality.csv"
-df <- read_csv(url(mort))
+#df <- read_csv(url(mort))
+df <- read_csv("data/mortality_2022-08-11.csv")
+
+countries <- df %>%
+  select(Country) %>% 
+  unique() %>% 
+  arrange(Country)
 ```
 
+CDR
+======
+
+Input{.sidebar}
+----------------------------------------------------------------
+
+### Crude Death Rate
+
+Compare the *crude death rates* of different countries.
+
+```{r}
+selectInput(
+  inputId = "cdrCountries",
+  label = "Select countries",
+  choices = countries,
+  selected = c("Germany", "Switzerland", "Italy", "France"),
+  multiple = TRUE)
+```
+
+
+Column{data-height=750}
+----------------------------------------------------------------
+### Crude Death Rates
+
+```{r}
+renderPlot(
+  df %>% 
+  filter(Country %in% input$cdrCountries) %>% 
+  mutate(
+    population = DTotal / RTotal,
+    Year = ymd(Year, truncated = 2)) %>% 
+  group_by(Year, Country) %>% 
+  summarise(CDR = sum(DTotal) / sum(population), .groups = "drop") %>% 
+  ggplot(aes(x = Year, y = CDR, color = Country)) +
+  geom_line(size = 1) +
+  ylab("Crude Death Rate")
+
+)
+```
 
 
 Page 1 {data-orientation=columns}
