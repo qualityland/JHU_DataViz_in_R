@@ -4,3 +4,4 @@
 .Ruserdata
 *.html
 *rsconnect*
+.DS_Store

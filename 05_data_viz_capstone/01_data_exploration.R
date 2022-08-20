@@ -24,7 +24,7 @@ mort_codes[!(mort_codes %in% country_codes)]
 missing_countries <- 
   tibble(
     Country = c("Germany", "France", "Northern Ireland", 
-                "Scottland", "Wales & England", "New Zealand"),
+                "Scottland", "England & Wales", "New Zealand"),
     CountryCode = c("DEUTNP", "FRATNP", "GBR_NIR",
                     "GBR_SCO", "GBRTENW", "NZL_NP"))
 
@@ -44,10 +44,17 @@ mort %>%
 
 # only filter: both sexes
 mort <- mort %>% 
-  filter(Sex == "b")
+  filter(Sex == "b") %>% 
+  mutate(Country = 
+           recode(
+             Country,
+             `Korea, Republic of`="Korea",
+             `Russian Federation`="Russia",
+             `Taiwan, Province of China`="Taiwan",
+             `United States of America`="USA"))
 
 
-# 
+# remove relative mortality and separation of sexes
 # mort <- mort %>% 
 #   filter(Sex == "b") %>% 
 #   select(Country,
@@ -55,6 +62,8 @@ mort <- mort %>%
 #          Year,
 #          Week,
 #          D0_14, D15_64, D65_74, D75_84, D85p, DTotal)
+
+  
 
 
 readr::write_csv(mort, "05_data_viz_capstone/data/mortality_2022-08-11.csv")

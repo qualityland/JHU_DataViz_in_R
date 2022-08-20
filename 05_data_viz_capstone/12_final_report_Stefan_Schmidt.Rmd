@@ -1,5 +1,5 @@
 ---
-title: "Final Report"
+title: "Mortality - before and during the Pandemic"
 author: "Stefan Schmidt"
 date: "`r Sys.Date()`"
 output: 
@@ -16,10 +16,12 @@ library(lubridate)
 #library(plotly)
 library(shiny)
 
-mort <- 
-"https://raw.githubusercontent.com/qualityland/JHU_DataViz_in_R/main/05_data_viz_capstone/data/mortality.csv"
-#df <- read_csv(url(mort))
-df <- read_csv("data/mortality_2022-08-11.csv")
+url_node = "https://raw.githubusercontent.com"
+url_dir = "/qualityland/JHU_DataViz_in_R/main/05_data_viz_capstone/data/"
+url_file = "mortality_2022-08-11.csv"
+data_file = paste0(url_node, url_dir, url_file)
+df <- read_csv(url(data_file))
+#df <- read_csv("data/mortality_2022-08-11.csv")
 
 countries <- df %>%
   select(Country) %>% 
@@ -33,14 +35,10 @@ CDR
 Input{.sidebar}
 ----------------------------------------------------------------
 
-### Crude Death Rate
-
-Compare the *crude death rates* of different countries.
-
 ```{r}
 selectInput(
   inputId = "cdrCountries",
-  label = "Select countries",
+  label = "Select countries:",
   choices = countries,
   selected = c("Germany", "Switzerland", "Italy", "France"),
   multiple = TRUE)
@@ -49,7 +47,8 @@ selectInput(
 
 Column{data-height=750}
 ----------------------------------------------------------------
-### Crude Death Rates
+
+### Crude Death Rate
 
 ```{r}
 renderPlot(
@@ -59,10 +58,12 @@ renderPlot(
     population = DTotal / RTotal,
     Year = ymd(Year, truncated = 2)) %>% 
   group_by(Year, Country) %>% 
-  summarise(CDR = sum(DTotal) / sum(population), .groups = "drop") %>% 
+  summarise(CDR = sum(DTotal) / sum(population) * 10^3, .groups = "drop") %>% 
   ggplot(aes(x = Year, y = CDR, color = Country)) +
   geom_line(size = 1) +
-  ylab("Crude Death Rate")
+  labs(
+    title = "Deaths per Year and 1000 Inhabitants",
+    y = "deaths / year per 1000")
 
 )
 ```
