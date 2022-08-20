@@ -5,16 +5,11 @@ library(plotly)
 library(shiny)
 library(ISOweek)
 
-mort <-
-  "https://raw.githubusercontent.com/qualityland/JHU_DataViz_in_R/main/05_data_viz_capstone/data/mortality_2022-08-11.csv"
-df_mort <- read_csv(url(mort))
-
-# most current STMF data
-# stmf <- 
-#   read_csv(
-#     "https://mortality.org/File/GetDocument/Public/STMF/Outputs/stmf.csv",
-#     skip = 2
-#   )
+url_node = "https://raw.githubusercontent.com"
+url_dir = "/qualityland/JHU_DataViz_in_R/main/05_data_viz_capstone/data/"
+url_file = "mortality_2022-08-11.csv"
+data_file = paste0(url_node, url_dir, url_file)
+df_mort <- read_csv(url(data_file))
 
 df_mort
 
@@ -28,16 +23,8 @@ df_mort
 # Crude Death Rate for several Countries
 # https://en.wikipedia.org/wiki/Mortality_rate#Crude_death_rate,_globally
 df_mort %>% 
-  filter(Country %in% c("Germany", "Switzerland", "Italy",
-                        "France", "United States of America")) %>% 
-  mutate(
-    # Country = recode(Country,
-    #                  `Wales & England` = "England & Wales",
-    #                  `Korea, Republic of` = "Korea",
-    #                  `Taiwan, Province of China` = "Taiwan",
-    #                  `United States of America` = "USA"),
-    population = DTotal / RTotal,
-    Year = ymd(Year, truncated = 2)) %>% 
+  filter(Country %in% c("Germany", "Switzerland", "Italy", "France", "USA")) %>% 
+  mutate(population = DTotal / RTotal, Year = ymd(Year, truncated = 2)) %>% 
   group_by(Year, Country) %>% 
   summarise(CDR = sum(DTotal) / sum(population), .groups = "drop") %>% 
   ggplot(aes(x = Year, y = CDR, color = Country)) +
@@ -53,7 +40,7 @@ df_mort %>%
   filter(Year > 2018, Country == "Switzerland") %>% 
   mutate(Year = factor(Year)) %>% 
   group_by(Year, Country) %>% 
-  ggplot(aes(x = Week, y = RTotal, color = Year)) +
+  ggplot(aes(x = Week, y = RTotal * 10^3, color = Year)) +
   geom_line() +
   labs(
     title="relative Mortality in Switzerland",
@@ -62,7 +49,7 @@ df_mort %>%
 
 
 
-df %>% 
+df_mort %>% 
   filter(
     Country %in% c("France", "Germany", "Switzerland", "Wales & England",
                    "Sweden", "United States of America"),
@@ -80,7 +67,7 @@ df %>%
 
 
 # Bar Plots, Switzerland
-df_by_age <- df %>% 
+df_mort %>% 
   filter(CountryCode == "CHE") %>% 
   select(Country, CountryCode, Year, Week, D0_14, D15_64, D65_74, D75_84,  D85p) %>% 
   pivot_longer(

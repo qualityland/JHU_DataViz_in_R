@@ -1,5 +1,5 @@
 ---
-title: "Mortality - before and during the Pandemic"
+title: "Mortality"
 author: "Stefan Schmidt"
 date: "`r Sys.Date()`"
 output: 
@@ -13,7 +13,7 @@ runtime: shiny
 library(flexdashboard)
 library(tidyverse)
 library(lubridate)
-#library(plotly)
+library(plotly)
 library(shiny)
 
 url_node = "https://raw.githubusercontent.com"
@@ -64,7 +64,48 @@ renderPlot(
   labs(
     title = "Deaths per Year and 1000 Inhabitants",
     y = "deaths / year per 1000")
+)
+```
 
+Weekly Death Rate
+======
+
+Input{.sidebar}
+----------------------------------------------------------------
+
+```{r}
+selectInput(
+  inputId = "wdrCountry",
+  label = "Select country:",
+  choices = countries,
+  selected = "Switzerland")
+
+selectInput(
+  inputId = "wdrYears",
+  label = "Select years:",
+  choices = 2016:2022,
+  selected = 2022,
+  multiple = TRUE)
+```
+
+
+Column{data-height=750}
+----------------------------------------------------------------
+
+### Weekly Death Rate
+
+```{r}
+renderPlot(
+  df %>% 
+  filter(Year %in% input$wdrYears, Country == input$wdrCountry) %>% 
+  mutate(Year = factor(Year)) %>% 
+  group_by(Year, Country) %>% 
+  ggplot(aes(x = Week, y = RTotal * 10^3, color = Year)) +
+  geom_line() +
+  labs(
+    title="Deaths per Week and 1000 Inhabitants",
+    x="Week of the Year",
+    y="deaths / week per 1000")
 )
 ```
 
@@ -112,23 +153,4 @@ df %>%
 ```
 
 
-Page 3
-======
-
-Input{.sidebar}
-----------------------------------------------------------------
-
-### Chart D
-
-```{r}
-
-```
-
-
-Column{data-height=750}
-----------------------------------------------------------------
-### Total Bills Passed by State, 110th Congress
-
-```{r}
-```
 
