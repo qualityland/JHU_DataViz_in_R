@@ -3,8 +3,8 @@ library(tidyverse)
 library(lubridate)
 library(plotly)
 library(shiny)
-library(ISOweek)
 
+# load data
 url_node = "https://raw.githubusercontent.com"
 url_dir = "/qualityland/JHU_DataViz_in_R/main/05_data_viz_capstone/data/"
 url_file = "mortality_2022-08-11.csv"
@@ -28,6 +28,8 @@ df_mort %>%
 #   arrange(desc(MinYear)) %>% 
 #   as.data.frame()
 
+
+# CDR
 # Crude Death Rate for several Countries
 # https://en.wikipedia.org/wiki/Mortality_rate#Crude_death_rate,_globally
 df_mort %>% 
@@ -42,7 +44,7 @@ df_mort %>%
 
 
 
-
+# one Coutry, multiple Years
 # Line Graphs, Switzerland, 2019 - 2022
 df_mort %>% 
   filter(Year > 2018, Country == "Switzerland") %>% 
@@ -56,10 +58,10 @@ df_mort %>%
     y="Death Rate")
 
 
-
+# multiple Counties, same Year
 df_mort %>% 
   filter(
-    Country %in% c("France", "Germany", "Switzerland", "Wales & England",
+    Country %in% c("France", "Germany", "Switzerland", "England & Wales",
                    "Sweden", "United States of America"),
     Sex == "b",
     Year == 2022) %>% 
@@ -93,7 +95,8 @@ df_mort %>%
                       `Total` = "all ages")) %>% 
   mutate(Age = factor(Age)) %>% 
   ggplot(aes(Week, Deaths, color = Age)) +
-  geom_line()
+  geom_line() +
+  guides(color = guide_legend(reverse=T))
 
 
 
@@ -115,19 +118,16 @@ df_mort %>%
   mutate(Age = factor(Age)) %>% 
   mutate(RDate = paste0(Year, "-W", Week, "-1"))
 
-df_by_age
-any(is.na(df_by_age$RDate))
 
 # Barplots - by Age Group and Year
 ggplot(df_by_age, aes(x = Age, y = Deaths, fill = Age)) +
 geom_col() +
 facet_wrap(~Year)
 
-library(ISOweek)
-ISOweek2date("2020-W53-1")
-
 
 # ISOweek experiments
+library(ISOweek)
+ISOweek2date("2020-W53-1")
 w <- paste("2009-W53", 1:7, sep = "-")
 data.frame(weekdate = w, date = ISOweek2date(w))
 # convert from calendar date to week date and back to calendar date
