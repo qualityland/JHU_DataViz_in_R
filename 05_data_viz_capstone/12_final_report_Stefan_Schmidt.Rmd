@@ -35,12 +35,12 @@ CDR
 Input{.sidebar}
 ----------------------------------------------------------------
 
-```{r}
+```{r in-cdr-countries}
 selectInput(
   inputId = "cdrCountries",
-  label = "Select countries:",
+  label = "Compare multiple Countries:",
   choices = countries,
-  selected = c("Germany", "Switzerland", "Italy", "France"),
+  selected = c("Germany", "Switzerland"),
   multiple = TRUE)
 ```
 
@@ -50,7 +50,7 @@ Column{data-height=750}
 
 ### Crude Death Rate
 
-```{r}
+```{r plot-cdr}
 renderPlot(
   df %>% 
   filter(Country %in% input$cdrCountries) %>% 
@@ -73,18 +73,22 @@ Weekly Death Rate
 Input{.sidebar}
 ----------------------------------------------------------------
 
-```{r}
+```{r in-wdr-country}
 selectInput(
   inputId = "wdrCountry",
   label = "Select country:",
   choices = countries,
   selected = "Switzerland")
+```
+
+
+```{r in-wdr-years}
 
 selectInput(
   inputId = "wdrYears",
-  label = "Select years:",
+  label = "Compare multiple years:",
   choices = 2016:2022,
-  selected = 2022,
+  selected = c(2020, 2021),
   multiple = TRUE)
 ```
 
@@ -94,7 +98,7 @@ Column{data-height=750}
 
 ### Weekly Death Rate
 
-```{r}
+```{r plot-wdr}
 renderPlot(
   df %>% 
   filter(Year %in% input$wdrYears, Country == input$wdrCountry) %>% 
@@ -108,6 +112,127 @@ renderPlot(
     y="deaths / week per 1000")
 )
 ```
+
+
+
+Absolute Numbers
+======
+
+Input{.sidebar}
+----------------------------------------------------------------
+
+```{r in-age-country}
+selectInput(
+  inputId = "ageCountry",
+  label = "Select country:",
+  choices = countries,
+  selected = "Switzerland")
+```
+
+
+```{r in-age-years}
+
+selectInput(
+  inputId = "ageYear",
+  label = "Select year:",
+  choices = 2016:2022,
+  selected = 2020)
+```
+
+
+Column{data-height=750}
+----------------------------------------------------------------
+
+### Death Rate by Age Group
+
+```{r plot-age}
+renderPlot(
+  df %>% 
+  filter(Country == input$ageCountry, Year == input$ageYear) %>% 
+  select(Country, Year, Week, D0_14, D15_64, D65_74, D75_84, D85p, DTotal) %>% 
+  pivot_longer(
+    cols = starts_with("D"),
+    names_to = "Age",
+    names_prefix = "D",
+    values_to = "Deaths") %>% 
+  mutate(Age = recode(Age,
+                      `0_14` = "0 - 14 years",
+                      `15_64` = "15 - 64 years",
+                      `65_74` = "65 - 74 years",
+                      `75_84` = "75 - 84 years",
+                      `85p` = "85+ years",
+                      `Total` = "all ages")) %>% 
+  mutate(Age = factor(Age)) %>% 
+  ggplot(aes(Week, Deaths, color = Age)) +
+    geom_line() +
+    labs(
+    title="Death Rate by Age Group",
+    x="Week of the Year",
+    y="Deaths / Week") +
+    guides(color = guide_legend(reverse=T))
+)
+```
+
+
+Relative Death Rate
+======
+
+Input{.sidebar}
+----------------------------------------------------------------
+
+```{r in-rage-country}
+selectInput(
+  inputId = "rageCountry",
+  label = "Select country:",
+  choices = countries,
+  selected = "Switzerland")
+```
+
+
+```{r in-rage-years}
+
+selectInput(
+  inputId = "rageYear",
+  label = "Select year:",
+  choices = 2016:2022,
+  selected = 2020)
+```
+
+
+Column{data-height=750}
+----------------------------------------------------------------
+
+### Relative Death Rate
+
+```{r plot-rage}
+renderPlot(
+  df %>% 
+  filter(Country == input$rageCountry, Year == input$rageYear) %>% 
+  select(Country, Year, Week, R0_14, R15_64, R65_74, R75_84, R85p) %>% 
+  pivot_longer(
+    cols = starts_with("R"),
+    names_to = "Age",
+    names_prefix = "R",
+    values_to = "DeathRate") %>% 
+  mutate(Age = recode(Age,
+                      `0_14` = "0 - 14 years",
+                      `15_64` = "15 - 64 years",
+                      `65_74` = "65 - 74 years",
+                      `75_84` = "75 - 84 years",
+                      `85p` = "85+ years",
+                      `Total` = "all ages")) %>% 
+  mutate(Age = factor(Age)) %>% 
+  ggplot(aes(Week, DeathRate, color = Age)) +
+    geom_line() +
+    labs(
+    title="Relative Death Rate by Age Group",
+    x="Week of the Year",
+    y="relative Death Rate") +
+    guides(color = guide_legend(reverse=T))
+)
+```
+
+
 
 
 Page 1 {data-orientation=columns}
