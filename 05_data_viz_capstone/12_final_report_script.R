@@ -78,9 +78,10 @@ df_mort %>%
 
 # Age Groups
 # Absolute Deaths
+# Area Plot
 df_mort %>% 
   filter(CountryCode == "CHE", Year == 2021) %>% 
-  select(Country, Year, Week, D0_14, D15_64, D65_74, D75_84, D85p, DTotal) %>% 
+  select(Country, Year, Week, D0_14, D15_64, D65_74, D75_84, D85p) %>% 
   pivot_longer(
     cols = starts_with("D"),
     names_to = "Age",
@@ -91,12 +92,41 @@ df_mort %>%
                       `15_64` = "15 - 64 years",
                       `65_74` = "65 - 74 years",
                       `75_84` = "75 - 84 years",
-                      `85p` = "85+ years",
-                      `Total` = "all ages")) %>% 
-  mutate(Age = factor(Age)) %>% 
-  ggplot(aes(Week, Deaths, color = Age)) +
-  geom_line() +
-  guides(color = guide_legend(reverse=T))
+                      `85p` = "85+ years")) %>% 
+  mutate(Age = factor(Age, )) %>% 
+  ggplot(aes(Week, Deaths, fill = Age)) +
+  geom_area(position = position_stack(reverse = TRUE)) +
+  labs(
+    title="Death Rates",
+    subtitle="Absolute Numbers - depending on Countries Population",
+    x="Week of the Year",
+    y="Deaths / Week") +
+  guides(fill = guide_legend(reverse=T))
+  
+
+# Bar Plot
+df_mort %>% 
+  filter(CountryCode == "CHE", Year == 2021) %>% 
+  select(Country, Year, Week, D0_14, D15_64, D65_74, D75_84, D85p) %>% 
+  pivot_longer(
+    cols = starts_with("D"),
+    names_to = "Age",
+    names_prefix = "D",
+    values_to = "Deaths") %>% 
+  mutate(Age = recode(Age,
+                      `0_14` = "0 - 14 years",
+                      `15_64` = "15 - 64 years",
+                      `65_74` = "65 - 74 years",
+                      `75_84` = "75 - 84 years",
+                      `85p` = "85+ years")) %>% 
+  mutate(Age = factor(Age, )) %>% 
+  ggplot(aes(Week, Deaths, fill = Age)) +
+  geom_col(position = position_stack(reverse = TRUE)) +
+  guides(fill = guide_legend(reverse=T))
+
+
+geom_area() # +
+  guides(fill = guide_legend(reverse=T))
 
 
 
