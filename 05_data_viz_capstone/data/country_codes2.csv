@@ -13,9 +13,9 @@ ESP,Spain
 EST,Estonia
 FIN,Finland
 FRATNP,France
+GBRTENW,England & Wales
 GBR_NIR,Northern Ireland
 GBR_SCO,Scottland
-GBRTENW,Wales & England
 GRC,Greece
 HRV,Croatia
 HUN,Hungary
@@ -36,4 +36,4 @@ SVK,Slovakia
 SVN,Slovenia
 SWE,Sweden
 TWN,Taiwan
-USA,United States
+USA,USA
