@@ -16,12 +16,62 @@ library(lubridate)
 library(plotly)
 library(shiny)
 
-url_node = "https://raw.githubusercontent.com"
-url_dir = "/qualityland/JHU_DataViz_in_R/main/05_data_viz_capstone/data/"
-url_file = "mortality_2022-08-11.csv"
-data_file = paste0(url_node, url_dir, url_file)
-df <- read_csv(url(data_file))
-#df <- read_csv("data/mortality_2022-08-11.csv")
+# url_node = "https://raw.githubusercontent.com"
+# url_dir = "/qualityland/JHU_DataViz_in_R/main/05_data_viz_capstone/data/"
+# url_file = "mortality_2022-08-11.csv"
+# data_file = paste0(url_node, url_dir, url_file)
+# df <- read_csv(url(data_file))
+# df <- read_csv("data/mortality_2022-08-11.csv")
+
+countries <- tribble(
+~CountryCode, ~Country,
+"AUS",        "Australia",
+"AUT",        "Austria",
+"BEL",        "Belgium",
+"BGR",        "Bulgaria",
+"CAN",        "Canada",
+"CHL",        "Chile",
+"HRV",        "Croatia",
+"CZE",        "Czechia",
+"DNK",        "Denmark",
+"GBRTENW",    "England & Wales",
+"EST",        "Estonia",
+"FIN",        "Finland",
+"FRATNP",     "France",
+"DEUTNP",     "Germany",
+"GBR_SCO",    "Scottland",
+"ESP",        "Spain",
+"GRC",        "Greece",
+"HUN",        "Hungary",
+"ISL",        "Iceland",
+"ISR",        "Israel",
+"ITA",        "Italy",
+"KOR",        "Korea",
+"LVA",        "Latvia",
+"LTU",        "Lithuania",
+"LUX",        "Luxembourg",
+"NLD",        "Netherlands",
+"NZL_NP",     "New Zealand",
+"GBR_NIR",    "Northern Ireland",
+"NOR",        "Norway",
+"POL",        "Poland",
+"PRT",        "Portugal",
+"RUS",        "Russia",
+"SVK",        "Slovakia",
+"SVN",        "Slovenia",
+"SWE",        "Sweden",
+"CHE",        "Switzerland",
+"TWN",        "Taiwan",
+"USA",        "USA"
+)
+
+stmf_url <- 
+  "https://mortality.org/File/GetDocument/Public/STMF/Outputs/stmf.csv"
+df <- read_csv(url(stmf_url), skip = 2)
+
+df <- df %>% 
+  dplyr::left_join(countries, by = "CountryCode") %>% 
+  relocate("Country")
 
 countries <- df %>%
   select(Country) %>% 
@@ -53,7 +103,7 @@ Column{data-height=750}
 ```{r plot-cdr}
 renderPlot(
   df %>% 
-  filter(Country %in% input$cdrCountries) %>% 
+  filter(Country %in% input$cdrCountries, Sex == "b") %>% 
   mutate(
     population = DTotal / RTotal,
     Year = ymd(Year, truncated = 2)) %>% 
@@ -101,7 +151,9 @@ Column{data-height=750}
 ```{r plot-wdr}
 renderPlot(
   df %>% 
-  filter(Year %in% input$wdrYears, Country == input$wdrCountry) %>% 
+  filter(Year %in% input$wdrYears,
+         Country == input$wdrCountry,
+         Sex == "b") %>% 
   mutate(Year = factor(Year)) %>% 
   group_by(Year, Country) %>% 
   ggplot(aes(x = Week, y = RTotal * 10^3, color = Year)) +
@@ -147,7 +199,9 @@ Column{data-height=750}
 ```{r plot-age}
 renderPlot(
   df %>% 
-  filter(Country == input$ageCountry, Year == input$ageYear) %>% 
+  filter(Country == input$ageCountry,
+         Year == input$ageYear,
+         Sex == "b") %>% 
   select(Country, Year, Week, D0_14, D15_64, D65_74, D75_84, D85p) %>% 
   pivot_longer(
     cols = starts_with("D"),
@@ -178,7 +232,9 @@ renderPlot(
 ```{r bar-plot-age}
 renderPlot(
   df %>% 
-  filter(Country == input$ageCountry, Year == input$ageYear) %>% 
+  filter(Country == input$ageCountry,
+         Year == input$ageYear,
+         Sex == "b") %>% 
   select(Country, Year, Week, D0_14, D15_64, D65_74, D75_84, D85p) %>% 
   pivot_longer(
     cols = starts_with("D"),
@@ -237,7 +293,9 @@ Column{data-height=750}
 ```{r plot-rage}
 renderPlot(
   df %>% 
-  filter(Country == input$rageCountry, Year == input$rageYear) %>% 
+  filter(Country == input$rageCountry,
+         Year == input$rageYear,
+         Sex == "b") %>% 
   select(Country, Year, Week, R0_14, R15_64, R65_74, R75_84, R85p) %>% 
   pivot_longer(
     cols = starts_with("R"),
@@ -296,7 +354,9 @@ Page 2
 
 ```{r}
 df %>% 
-  filter(Year > 2018, CountryCode == "CHE") %>% 
+  filter(Year > 2018,
+         CountryCode == "CHE",
+         Sex == "b") %>% 
   mutate(Year = factor(Year)) %>% 
   group_by(Year, CountryCode) %>% 
   ggplot(aes(x = Week, y = DTotal, color = Year)) +

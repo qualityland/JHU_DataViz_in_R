@@ -1,13 +1,75 @@
+library(flexdashboard)
 library(tidyverse)
+library(lubridate)
+library(plotly)
+library(shiny)
 
-mort <- read_csv("05_data_viz_capstone/data/stmf_2022-08-11.csv", skip = 2)
+# Countries
+countries <- tribble(
+  ~CountryCode, ~Country,
+  "AUS",        "Australia",
+  "AUT",        "Austria",
+  "BEL",        "Belgium",
+  "BGR",        "Bulgaria",
+  "CAN",        "Canada",
+  "CHE",        "Switzerland",
+  "CHL",        "Chile",
+  "CZE",        "Czechia",
+  "DEUTNP",     "Germany",
+  "DNK",        "Denmark",
+  "ESP",        "Spain",
+  "EST",        "Estonia",
+  "FIN",        "Finland",
+  "FRATNP",     "France",
+  "GBRTENW",    "England & Wales",
+  "GBR_NIR",    "Northern Ireland",
+  "GBR_SCO",    "Scottland",
+  "GRC",        "Greece",
+  "HRV",        "Croatia",
+  "HUN",        "Hungary",
+  "ISL",        "Iceland",
+  "ISR",        "Israel",
+  "ITA",        "Italy",
+  "KOR",        "Korea",
+  "LTU",        "Lithuania",
+  "LUX",        "Luxembourg",
+  "LVA",        "Latvia",
+  "NLD",        "Netherlands",
+  "NOR",        "Norway",
+  "NZL_NP",     "New Zealand",
+  "POL",        "Poland",
+  "PRT",        "Portugal",
+  "RUS",        "Russia",
+  "SVK",        "Slovakia",
+  "SVN",        "Slovenia",
+  "SWE",        "Sweden",
+  "TWN",        "Taiwan",
+  "USA",        "USA")
+
+# use STMF data directly
+stmf_url <- 
+  "https://mortality.org/File/GetDocument/Public/STMF/Outputs/stmf.csv"
+df <- read_csv(url(stmf_url), skip = 2)
+
+# joining country names
+df <- df %>% 
+  dplyr::left_join(countries, by = "CountryCode") %>% 
+  relocate("Country")
+
+# country drop down list
+countries <- df %>%
+  select(Country) %>% 
+  unique() %>% 
+  arrange(Country)
+
+#mort <- read_csv("05_data_viz_capstone/data/stmf_2022-08-11.csv", skip = 2)
 
 #countries <- read_csv("05_data_viz_capstone/data/countries_codes_and_coordinates.csv")
-countries <- 
-  read_csv(
-    "https://raw.githubusercontent.com/lukes/ISO-3166-Countries-with-Regional-Codes/master/slim-3/slim-3.csv",
-    col_select = c("name", "alpha-3"))
-names(countries) <- c("Country", "CountryCode")
+# countries <- 
+#   read_csv(
+#     "https://raw.githubusercontent.com/lukes/ISO-3166-Countries-with-Regional-Codes/master/slim-3/slim-3.csv",
+#     col_select = c("name", "alpha-3"))
+# names(countries) <- c("Country", "CountryCode")
 
 # check if we have country name for all our country codes
 mort_codes <- sort(unique(mort$CountryCode))
@@ -82,6 +144,17 @@ df %>%
   ggplot(aes(x = Week, y = DTotal, color=Year)) +
   geom_line()
 
+
+# extract country names and codes
+country_codes <- df %>% 
+  select(CountryCode, Country) %>% 
+  unique()
+write_csv(country_codes, "./05_data_viz_capstone/data/country_codes2.csv")
+
+
 # DOES NOT WORK!!!
 u <- "https://github.com/qualityland/JHU_DataViz_in_R/blob/main/05_data_viz_capstone/data/mortality.rds"
 mortality <- read_rds(url(u, method = "libcurl"))
+
+
+
