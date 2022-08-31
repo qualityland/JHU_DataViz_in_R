@@ -9,7 +9,7 @@ output:
 runtime: shiny
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, cache=TRUE}
 library(flexdashboard)
 library(tidyverse)
 library(lubridate)
@@ -256,6 +256,30 @@ renderPlot(
     x="Week of the Year",
     y="Deaths / Week") +
     guides(fill = guide_legend(reverse=T))
+)
+```
+
+
+
+### Mortality by Sex
+
+```{r bar-plot-sex}
+renderPlot(
+  df %>% 
+  filter(Country == input$ageCountry,
+         Year == input$ageYear,
+         Sex != "b") %>% 
+  select(Country, Year, Week, Sex, DTotal) %>% 
+  mutate(Sex = recode(Sex,
+                      `f`="female",
+                      `m`="male")) %>% 
+  ggplot(aes(Week, DTotal, fill = Sex)) +
+  geom_col() +
+    labs(
+    title="Death Rates",
+    subtitle="Absolute Numbers, by Sex",
+    x="Week of the Year",
+    y="Deaths / Week")
 )
 ```
 

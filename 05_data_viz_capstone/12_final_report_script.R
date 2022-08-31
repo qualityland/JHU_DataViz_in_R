@@ -155,6 +155,7 @@ df_mort %>%
   
 
 # Bar Plot
+# week of year by age group
 df_mort %>% 
   filter(CountryCode == "CHE",
          Year == 2021,
@@ -175,5 +176,91 @@ df_mort %>%
   ggplot(aes(Week, Deaths, fill = Age)) +
   geom_col(position = position_stack(reverse = TRUE)) +
   guides(fill = guide_legend(reverse=T))
+# week of year by sex
+df_mort %>% 
+  filter(CountryCode == "CHE",
+         Year == 2021,
+         Sex != "b") %>% 
+  select(Country, Year, Week, Sex, DTotal) %>% 
+  ggplot(aes(Week, DTotal, fill = Sex)) +
+  geom_col(position = position_stack(reverse = TRUE)) +
+  guides(fill = guide_legend(reverse=T))
 
 
+df_mort %>% 
+  filter(CountryCode == "CHE",
+         Year == 2021,
+         Sex != "b") %>% 
+  select(Country, Year, Week, Sex, DTotal) %>% 
+  mutate(Sex = recode(Sex,
+                      `f`="female",
+                      `m`="male")) %>% 
+  ggplot(aes(Week, DTotal, fill = Sex)) +
+  geom_col() +
+  labs(
+    title="Death Rates",
+    subtitle="Absolute Numbers, by Sex",
+    x="Week of the Year",
+    y="Deaths / Week")
+
+
+# Scatter Plot 
+df_mort %>% 
+  mutate(Year = factor(Year)) %>% 
+  filter(CountryCode == "CHE",
+         #Year == 2021,
+         Sex == "b") %>% 
+  select(Country, Year, Week, DTotal) %>% 
+  ggplot(aes(Week, DTotal, color = Year)) +
+  geom_point()
+
+# Boxplot 
+# total Deaths by year
+df_mort %>% 
+  mutate(Year = factor(Year)) %>% 
+  filter(CountryCode == "CHE",
+         #Year == 2021,
+         Sex == "b") %>% 
+  select(Country, Year, Week, DTotal) %>% 
+  ggplot(aes(Year, DTotal)) +
+  geom_boxplot() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
+# total deaths by sex
+df_mort %>% 
+  mutate(Year = factor(Year)) %>% 
+  filter(CountryCode == "CHE",
+         Sex != "b") %>% 
+  select(Country, Year, Week, Sex, DTotal) %>% 
+  ggplot(aes(Sex, DTotal, fill=Sex)) +
+  geom_boxplot() +
+  facet_wrap(~Year)
+
+# heatmap
+df_mort %>% 
+  filter(Country == "Switzerland",
+         Year == 2021,
+         Sex == "b") %>% 
+  select(Country, Year, Week, R0_14, R15_64, R65_74, R75_84, R85p) %>% 
+  pivot_longer(
+    cols = starts_with("R"),
+    names_to = "Age",
+    names_prefix = "R",
+    values_to = "DeathRate") %>% 
+  mutate(Age = recode(Age,
+                      `0_14` = "0 - 14 years",
+                      `15_64` = "15 - 64 years",
+                      `65_74` = "65 - 74 years",
+                      `75_84` = "75 - 84 years",
+                      `85p` = "85+ years",
+                      `Total` = "all ages")) %>% 
+  mutate(Age = factor(Age)) %>% 
+  ggplot(aes(Week, Age, fill = DeathRate)) +
+  geom_tile() +
+  scale_fill_gradient(low="white", high="blue") +
+  labs(
+    title="Heatmap: Relative Death Rate",
+    subtitle="For each Age Group and Week of Year",
+    x="Week of the Year",
+    y="Age Group") +
+  guides(color = guide_legend(reverse=T))
