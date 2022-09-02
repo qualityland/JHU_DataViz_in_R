@@ -128,7 +128,7 @@ df_mort %>%
 # Absolute Deaths
 # Area Plot
 df_mort %>% 
-  filter(CountryCode == "CHE",
+  filter(Country == "Switzerland",
          Year == 2021,
          Sex == "b") %>% 
   select(Country, Year, Week, D0_14, D15_64, D65_74, D75_84, D85p) %>% 
@@ -157,7 +157,7 @@ df_mort %>%
 # Bar Plot
 # week of year by age group
 df_mort %>% 
-  filter(CountryCode == "CHE",
+  filter(Country == "Switzerland",
          Year == 2021,
          Sex == "b") %>% 
   select(Country, Year, Week, D0_14, D15_64, D65_74, D75_84, D85p) %>% 
@@ -176,19 +176,10 @@ df_mort %>%
   ggplot(aes(Week, Deaths, fill = Age)) +
   geom_col(position = position_stack(reverse = TRUE)) +
   guides(fill = guide_legend(reverse=T))
+
 # week of year by sex
 df_mort %>% 
-  filter(CountryCode == "CHE",
-         Year == 2021,
-         Sex != "b") %>% 
-  select(Country, Year, Week, Sex, DTotal) %>% 
-  ggplot(aes(Week, DTotal, fill = Sex)) +
-  geom_col(position = position_stack(reverse = TRUE)) +
-  guides(fill = guide_legend(reverse=T))
-
-
-df_mort %>% 
-  filter(CountryCode == "CHE",
+  filter(Country == "Switzerland",
          Year == 2021,
          Sex != "b") %>% 
   select(Country, Year, Week, Sex, DTotal) %>% 
@@ -205,20 +196,22 @@ df_mort %>%
 
 
 # Scatter Plot 
-df_mort %>% 
+sp <- df_mort %>% 
   mutate(Year = factor(Year)) %>% 
-  filter(CountryCode == "CHE",
+  filter(Country == "Switzerland",
          #Year == 2021,
          Sex == "b") %>% 
   select(Country, Year, Week, DTotal) %>% 
   ggplot(aes(Week, DTotal, color = Year)) +
   geom_point()
 
+ggplotly(sp)
+
 # Boxplot 
 # total Deaths by year
 df_mort %>% 
   mutate(Year = factor(Year)) %>% 
-  filter(CountryCode == "CHE",
+  filter(Country == "Switzerland",
          #Year == 2021,
          Sex == "b") %>% 
   select(Country, Year, Week, DTotal) %>% 
@@ -226,15 +219,20 @@ df_mort %>%
   geom_boxplot() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 
-# total deaths by sex
-df_mort %>% 
+# relative death rate by sex
+bp <- df_mort %>% 
   mutate(Year = factor(Year)) %>% 
-  filter(CountryCode == "CHE",
-         Sex != "b") %>% 
-  select(Country, Year, Week, Sex, DTotal) %>% 
-  ggplot(aes(Sex, DTotal, fill=Sex)) +
+  filter(Country == c("Germany", "Switzerland"),
+         Sex != "b",
+         Year == 2020) %>% 
+  select(Country, Year, Week, Sex, RTotal) %>% 
+  mutate(Sex = recode(Sex,
+                      `f`="female",
+                      `m`="male")) %>% 
+  ggplot(aes(Sex, RTotal, fill=Sex)) +
   geom_boxplot() +
-  facet_wrap(~Year)
+  facet_wrap(~Country)
+ggplotly(bp)
 
 # heatmap
 df_mort %>% 
