@@ -222,7 +222,7 @@ df_mort %>%
 # relative death rate by sex
 bp <- df_mort %>% 
   mutate(Year = factor(Year)) %>% 
-  filter(Country == c("Germany", "Switzerland"),
+  filter(Country == c("Switzerland"),
          Sex != "b",
          Year == 2020) %>% 
   select(Country, Year, Week, Sex, RTotal) %>% 
