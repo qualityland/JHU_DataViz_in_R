@@ -3,9 +3,10 @@ title: "Mortality"
 author: "Stefan Schmidt"
 date: "`r Sys.Date()`"
 output: 
-  flexdashboard::flex_dashboard:
-    orientation: columns
-    vertical_layout: fill
+    flexdashboard::flex_dashboard:
+        orientation: columns
+        vertical_layout: fill
+        source_code: "embed"
 runtime: shiny
 ---
 
@@ -239,7 +240,7 @@ renderPlot(
     labs(
     title="Death Rates",
     subtitle="Absolute Numbers by Sex",
-    x="Week of the Year",
+    x="Week of Year",
     y="Deaths / Week")
 )
 ```
@@ -318,7 +319,6 @@ renderPlot(
   ggplot(aes(Week, RTotal * 10^3, color = Sex)) +
   geom_line() +
     labs(
-    title="Death Rate by Sex",
     x="Week of Year",
     y="Deaths / Year and 1000 Inhabitants")
 )
