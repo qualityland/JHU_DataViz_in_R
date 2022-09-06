@@ -16,13 +16,6 @@ library(lubridate)
 library(plotly)
 library(shiny)
 
-# url_node = "https://raw.githubusercontent.com"
-# url_dir = "/qualityland/JHU_DataViz_in_R/main/05_data_viz_capstone/data/"
-# url_file = "mortality_2022-08-11.csv"
-# data_file = paste0(url_node, url_dir, url_file)
-# df <- read_csv(url(data_file))
-# df <- read_csv("data/mortality_2022-08-11.csv")
-
 countries <- tribble(
 ~CountryCode, ~Country,
 "AUS",        "Australia",
@@ -79,7 +72,7 @@ countries <- df %>%
   arrange(Country)
 ```
 
-CRD (Overview)
+CRD (yearly)
 ======
 
 Input{.sidebar}
@@ -98,7 +91,7 @@ selectInput(
 Column{data-height=750}
 ----------------------------------------------------------------
 
-### Crude Death Rate (Overview)
+### Crude Death Rate (yearly)
 
 ```{r plot-cdr}
 renderPlot(
@@ -113,7 +106,7 @@ renderPlot(
   geom_line(size = 1) +
   labs(
     title = "Deaths per Year and 1000 Inhabitants",
-    y = "deaths / year per 1000")
+    y = "Deaths / Year and 1000 Inhabitants")
 )
 ```
 
@@ -126,7 +119,7 @@ Input{.sidebar}
 ```{r in-wdr-country}
 selectInput(
   inputId = "wdrCountry",
-  label = "Select country:",
+  label = "Select Country:",
   choices = countries,
   selected = "Switzerland")
 ```
@@ -136,7 +129,7 @@ selectInput(
 
 selectInput(
   inputId = "wdrYears",
-  label = "Compare multiple years:",
+  label = "Compare multiple Years:",
   choices = 2016:2022,
   selected = c(2020, 2021),
   multiple = TRUE)
@@ -146,7 +139,7 @@ selectInput(
 Column{data-height=750}
 ----------------------------------------------------------------
 
-### Weekly Death Rate
+### Crude Death Rate (weekly)
 
 ```{r plot-wdr}
 renderPlot(
@@ -159,9 +152,9 @@ renderPlot(
   ggplot(aes(x = Week, y = RTotal * 10^3, color = Year)) +
   geom_line() +
   labs(
-    title="Deaths per Week and 1000 Inhabitants",
-    x="Week of the Year",
-    y="deaths / week per 1000")
+    title="Deaths per Year and 1000 Inhabitants",
+    x="Week of Year",
+    y="Deaths / Year and 1000 Inhabitants")
 )
 ```
 
@@ -175,7 +168,7 @@ Input{.sidebar}
 ```{r in-age-country}
 selectInput(
   inputId = "ageCountry",
-  label = "Select country:",
+  label = "Select Country:",
   choices = countries,
   selected = "Switzerland")
 ```
@@ -185,7 +178,7 @@ selectInput(
 
 selectInput(
   inputId = "ageYear",
-  label = "Select year:",
+  label = "Select Year:",
   choices = 2016:2022,
   selected = 2020)
 ```
@@ -219,8 +212,8 @@ renderPlot(
     geom_area(position = position_stack(reverse = TRUE)) +
     labs(
     title="Death Rates",
-    subtitle="Absolute Numbers, by Age Group",
-    x="Week of the Year",
+    subtitle="Absolute Numbers by Age Group",
+    x="Week of Year",
     y="Deaths / Week") +
     guides(fill = guide_legend(reverse=T))
 )
@@ -245,14 +238,14 @@ renderPlot(
   geom_area() +
     labs(
     title="Death Rates",
-    subtitle="Absolute Numbers, by Sex",
+    subtitle="Absolute Numbers by Sex",
     x="Week of the Year",
     y="Deaths / Week")
 )
 ```
 
 
-Relative Death Rate
+Relative Death Rates
 ======
 
 Input{.sidebar}
@@ -261,7 +254,7 @@ Input{.sidebar}
 ```{r in-rage-country}
 selectInput(
   inputId = "rageCountry",
-  label = "Select country:",
+  label = "Select Country:",
   choices = countries,
   selected = "Switzerland")
 ```
@@ -269,7 +262,7 @@ selectInput(
 ```{r in-rage-year}
 selectInput(
   inputId = "rageYear",
-  label = "Select year:",
+  label = "Select Year:",
   choices = 2016:2022,
   selected = 2020)
 ```
@@ -278,7 +271,7 @@ selectInput(
 Column{data-height=750}
 ----------------------------------------------------------------
 
-### Relative Death Rate
+### Relative Death Rate by Age
 
 ```{r plot-rage}
 renderPlot(
@@ -303,13 +296,33 @@ renderPlot(
   ggplot(aes(Week, DeathRate, color = Age)) +
     geom_line() +
     labs(
-    title="Relative Death Rate by Age Group",
-    x="Week of the Year",
+    x="Week of Year",
     y="relative Death Rate") +
     guides(color = guide_legend(reverse=T))
 )
 ```
 
+
+### Death Rate by Sex
+
+```{r plot-rsex}
+renderPlot(
+  df %>% 
+  filter(Country == input$rageCountry,
+         Year == input$rageYear,
+         Sex != "b") %>% 
+  select(Country, Year, Week, Sex, RTotal) %>% 
+  mutate(Sex = recode(Sex,
+                      `f`="female",
+                      `m`="male")) %>% 
+  ggplot(aes(Week, RTotal * 10^3, color = Sex)) +
+  geom_line() +
+    labs(
+    title="Death Rate by Sex",
+    x="Week of Year",
+    y="Deaths / Year and 1000 Inhabitants")
+)
+```
 
 
 
@@ -317,79 +330,80 @@ Comparison {data-orientation=columns}
 ===================================== 
 
 Column
--------    
-
+-------
 
 ```{r in-cmp-country1}
 selectInput(
   inputId = "cmpCountry1",
-  label = "Select first country:",
+  label = "Select first Country:",
   choices = countries,
   selected = "Switzerland")
 
 selectInput(
   inputId = "cmpYear1",
-  label = "Select year:",
+  label = "Select Year:",
   choices = 2016:2022,
   selected = c(2020, 2021))
 ```
 
 
-### Scatterplot
+### Relative Death Rate
 
 ```{r splot-1st-cntry}
 renderPlot(
   df %>% 
-    mutate(Year = factor(Year)) %>% 
-    filter(Country == input$cmpCountry1,
-           Year == input$cmpYear1,
-           Sex == "b") %>% 
-    select(Country, Year, Week, DTotal) %>% 
-    ggplot(aes(Week, DTotal, color = Year)) +
-    geom_point()
+  mutate(Year = factor(Year)) %>% 
+  filter(Country == input$cmpCountry1,
+         Year == input$cmpYear1,
+         Sex == "b") %>% 
+  select(Country, Year, Week, RTotal) %>% 
+  ggplot(aes(Week, RTotal * 10^3)) +
+  geom_point() +
+  labs(y="Deaths / Year and 1000 Inhabitants",
+       x="Week of Year") +
+  guides(color="none")
 )
 ```
 
-### Histogramm
+### Distribution by Sex
 
 ```{r hist-1st-cntry}
-
 renderPlot(
   df %>% 
-    mutate(Year = factor(Year)) %>% 
-    filter(Country == input$cmpCountry1,
-           Year == input$cmpYear1,
-           Sex != "b") %>% 
+  mutate(Year = factor(Year)) %>% 
+  filter(Country == input$cmpCountry1,
+         Year == input$cmpYear1,
+         Sex != "b") %>% 
   select(Country, Year, Week, Sex, RTotal) %>% 
   mutate(Sex = recode(Sex,
                       `f`="female",
                       `m`="male")) %>% 
-  ggplot(aes(Sex, RTotal, fill=Sex)) +
-  geom_boxplot()
+  ggplot(aes(Sex, RTotal * 10^3, fill=Sex)) +
+  geom_boxplot() +
+  labs(y="Deaths / Year and 1000 Inhabitants") +
+  guides(fill="none")
 )
-
 ```
 
 Column
--------    
-
+-------
 
 ```{r in-cmp-country2}
 selectInput(
   inputId = "cmpCountry2",
-  label = "Select second country:",
+  label = "Select second Country:",
   choices = countries,
   selected = "Germany")
 
 selectInput(
   inputId = "cmpYear2",
-  label = "Select year:",
+  label = "Select Year:",
   choices = 2016:2022,
   selected = c(2020, 2021))
 ```
 
 
-### Scatterplot
+### Relative Death Rate
 
 ```{r splot-2nd-cntry}
 renderPlot(
@@ -398,13 +412,16 @@ renderPlot(
     filter(Country == input$cmpCountry2,
            Year == input$cmpYear2,
            Sex == "b") %>% 
-    select(Country, Year, Week, DTotal) %>% 
-    ggplot(aes(Week, DTotal, color = Year)) +
-    geom_point()
+    select(Country, Year, Week, RTotal) %>% 
+    ggplot(aes(Week, RTotal * 10^3)) +
+    geom_point() +
+    labs(y="Deaths / Year and 1000 Inhabitants",
+         x="Week of Year") +
+    guides(color="none")
 )
 ```
 
-### Histogram
+### Distribution by Sex
 
 ```{r hist-2nd-cntry}
 renderPlot(
@@ -413,12 +430,14 @@ renderPlot(
     filter(Country == input$cmpCountry2,
            Year == input$cmpYear2,
            Sex != "b") %>% 
-  select(Country, Year, Week, Sex, RTotal) %>% 
-  mutate(Sex = recode(Sex,
+    select(Country, Year, Week, Sex, RTotal) %>% 
+    mutate(Sex = recode(Sex,
                       `f`="female",
                       `m`="male")) %>% 
-  ggplot(aes(Sex, RTotal, fill=Sex)) +
-  geom_boxplot()
+    ggplot(aes(Sex, RTotal * 10^3, fill=Sex)) +
+    geom_boxplot() +
+    labs(y="Deaths / Year and 1000 Inhabitants") +
+    guides(fill="none")
 )
 
 ```
